@@ -5,16 +5,16 @@
         <v-card ref="form">
           <v-card-text>
             <v-text-field
-              v-model="title"
-              :rules="rules"
+              v-model="form.userName"
+              :rules="[rules.requiredUserName, rules.minUserName]"
               counter="15"
               hint="At least 3 characters"
               label="User Name"
             ></v-text-field>
             <v-text-field
-              v-model="password"
+              v-model="form.password"
               :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="[rules.required, rules.min]"
+              :rules="[rules.requiredPassword, rules.minPassword]"
               :type="show1 ? 'text' : 'password'"
               name="input-10-1"
               label="Password"
@@ -22,6 +22,7 @@
               counter
               @click:append="show1 = !show1"
             ></v-text-field>
+
             <v-btn class="mt-4" v-on:click="login()">
               <span class="mr-2">Login</span>
             </v-btn>
@@ -33,22 +34,39 @@
 </template>
 
 <script>
+const axios = require("axios");
+
 export default {
   name: "Login",
   data() {
     return {
+      form: {
+        userName: "",
+        password: ""
+      },
       show1: false,
-      password: "Password",
       rules: {
-        required: value => !!value || "Required.",
-        min: v => v.length >= 8 || "Min 8 characters",
-        emailMatch: () => "The email and password you entered don't match"
+        requiredUserName: value => !!value || "Required.",
+        minUserName: v => v.length >= 3 || "Min 3 characters",
+        requiredPassword: value => !!value || "Required.",
+        minPassword: v => v.length >= 8 || "Min 8 characters"
       }
     };
   },
+  /* validations: {
+    form: {
+      name: { required, isJoe: isNameJoe },
+      email: { required, email, notGmail, isEmailAvailable }
+    }
+  }, */
   methods: {
-    login() {
-      return alert("Hit");
+    async login() {
+      console.log(this.form.userName, this.form.password);
+
+      await axios.post("http://localhost:3000/auth/", {
+        examName: this.userName,
+        questions: this.password
+      });
     }
   }
 };

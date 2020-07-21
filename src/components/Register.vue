@@ -9,7 +9,7 @@
               :rules="[rules.requiredUserName, rules.minUserName]"
               counter="15"
               hint="At least 3 characters"
-              label="User Name"
+              label="Username"
             ></v-text-field>
             <v-text-field
               v-model="form.password"
@@ -23,8 +23,31 @@
               @click:append="show1 = !show1"
             ></v-text-field>
 
-            <v-btn class="mt-4" v-on:click="login()">
-              <span class="mr-2">Login</span>
+            <v-text-field
+              v-model="form.name"
+              :rules="[rules.requiredUserName, rules.minUserName]"
+              counter="15"
+              hint="At least 3 characters"
+              label="Name"
+            ></v-text-field>
+            <v-text-field
+              v-model="form.email"
+              :rules="[rules.requiredUserName, rules.minUserName]"
+              counter="15"
+              hint="At least 3 characters"
+              label="Email"
+            ></v-text-field>
+
+            <v-text-field
+              v-model="form.role"
+              :rules="[rules.requiredUserName, rules.minUserName]"
+              counter="15"
+              hint="At least 3 characters"
+              label="Role"
+            ></v-text-field>
+
+            <v-btn class="mt-4" v-on:click="register()">
+              <span class="mr-2">Register</span>
             </v-btn>
           </v-card-text>
         </v-card>
@@ -37,12 +60,15 @@
 const axios = require("axios");
 
 export default {
-  name: "Login",
+  name: "Register",
   data() {
     return {
       form: {
         userName: "",
-        password: ""
+        password: "",
+        name: "",
+        email: "",
+        role: []
       },
       show1: false,
       rules: {
@@ -60,20 +86,20 @@ export default {
     }
   }, */
   methods: {
-    async login() {
-      const url = "http://localhost:3000/auth/";
-      const data = {
+    async register() {
+      const user = {
         userName: this.form.userName,
-        password: this.form.password
+        password: this.form.password,
+        name: this.form.name,
+        email: this.form.email,
+        role: ["admin"]
       };
-      const headers = {
-        "Content-Type": "application/json"
-      };
-      const retval = await axios.post(url, data, headers);
-      console.log(retval);
 
-      this.$cookie.set("accessToken", retval.data.accessToken, 1);
-      this.$cookie.set("refreshToken", retval.data.refreshToken, 1);
+      console.log(user);
+
+      await axios.post("http://localhost:3000/user/register", {
+        user
+      });
     }
   }
 };

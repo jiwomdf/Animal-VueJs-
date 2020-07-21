@@ -13,18 +13,21 @@
 
     <v-main>
       <Login />
+      <Register />
     </v-main>
   </v-app>
 </template>
 
 <script>
 import Login from "./components/Login";
+import Register from "./components/Register";
 
 export default {
   name: "App",
 
   components: {
-    Login
+    Login,
+    Register
   },
 
   data: () => ({

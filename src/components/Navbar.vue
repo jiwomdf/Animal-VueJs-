@@ -16,6 +16,8 @@
 </template>
 
 <script>
+const axios = require("axios");
+
 export default {
   name: "Navbar",
   data() {
@@ -23,28 +25,40 @@ export default {
   },
   computed: {
     isLogin() {
-      return this.$store.state.isLogin;
-    }
+      console.log(this.$store.state.loginUserName);
+      return this.$store.state.loginUserName != "" ? true : false;
+    },
   },
   methods: {
     init() {
       let accessToken = this.$cookie.get("accessToken");
       let refreshToken = this.$cookie.get("refreshToken");
 
-      console.log(this.isLogin);
-
-      if (accessToken != null && refreshToken != null) this.isLogin = true;
-      else this.isLogin = false;
+      if (accessToken == null || refreshToken == null)
+        this.$store.state.loginUserName = "";
     },
     login() {
       this.$router.push("/Login");
     },
     logout() {
+      let refreshToken = this.$cookie.get("refreshToken");
+
+      const url = "http://localhost:3000/auth/logout";
+      const data = {
+        userName: this.$store.state.userName,
+        refreshToken: refreshToken,
+      };
+      const headers = { "Content-Type": "application/json" };
+
+      axios.post(url, data, headers);
+
       this.$cookie.delete("accessToken");
       this.$cookie.delete("refreshToken");
+      this.$store.state.loginUserName = "";
+      window.sessionStorage.clear();
 
-      this.$router.push("/Main");
-    }
-  }
+      this.$router.push("/");
+    },
+  },
 };
 </script>

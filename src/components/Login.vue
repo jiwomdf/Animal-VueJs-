@@ -50,38 +50,39 @@ export default {
     return {
       form: {
         userName: "",
-        password: ""
+        password: "",
       },
       show1: false,
       rules: {
-        requiredUserName: value => !!value || "Required.",
-        minUserName: v => v.length >= 3 || "Min 3 characters",
-        requiredPassword: value => !!value || "Required.",
-        minPassword: v => v.length >= 8 || "Min 8 characters"
-      }
+        requiredUserName: (value) => !!value || "Required.",
+        minUserName: (v) => v.length >= 3 || "Min 3 characters",
+        requiredPassword: (value) => !!value || "Required.",
+        minPassword: (v) => v.length >= 8 || "Min 8 characters",
+      },
     };
   },
   methods: {
     async login() {
-      const url = "http://localhost:3000/auth/";
+      const url = "http://localhost:3000/auth/login";
       const data = {
         userName: this.form.userName,
-        password: this.form.password
+        password: this.form.password,
       };
       const headers = {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       };
       const retval = await axios.post(url, data, headers);
 
       this.$cookie.set("accessToken", retval.data.accessToken, 1);
       this.$cookie.set("refreshToken", retval.data.refreshToken, 1);
+      this.$store.state.loginUserName = this.form.userName;
 
       alert("cookie set");
       this.$router.push("/Dashboard");
     },
     register() {
       this.$router.push("/Register");
-    }
-  }
+    },
+  },
 };
 </script>

@@ -2,6 +2,7 @@
   <v-container>
     <v-row justify="center">
       <v-col cols="12" sm="10" md="8" lg="6">
+        <h1 class="mb-2">Login</h1>
         <v-card ref="form">
           <v-card-text>
             <v-text-field
@@ -9,7 +10,7 @@
               :rules="[rules.requiredUserName, rules.minUserName]"
               counter="15"
               hint="At least 3 characters"
-              label="User Name"
+              label="Username"
             ></v-text-field>
             <v-text-field
               v-model="form.password"
@@ -28,6 +29,13 @@
             </v-btn>
           </v-card-text>
         </v-card>
+      </v-col>
+    </v-row>
+    <v-row justify="center">
+      <v-col cols="12" sm="10" md="8" lg="6">
+        <v-btn text class="mt-4" v-on:click="register()">
+          <span class="mr-2">dont have any account? click to register</span>
+        </v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -53,12 +61,6 @@ export default {
       }
     };
   },
-  /* validations: {
-    form: {
-      name: { required, isJoe: isNameJoe },
-      email: { required, email, notGmail, isEmailAvailable }
-    }
-  }, */
   methods: {
     async login() {
       const url = "http://localhost:3000/auth/";
@@ -74,6 +76,11 @@ export default {
 
       this.$cookie.set("accessToken", retval.data.accessToken, 1);
       this.$cookie.set("refreshToken", retval.data.refreshToken, 1);
+
+      alert("cookie set");
+    },
+    register() {
+      this.$router.push("/Register");
     }
   }
 };

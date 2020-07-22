@@ -72,12 +72,12 @@ export default {
         "Content-Type": "application/json"
       };
       const retval = await axios.post(url, data, headers);
-      console.log(retval);
 
       this.$cookie.set("accessToken", retval.data.accessToken, 1);
       this.$cookie.set("refreshToken", retval.data.refreshToken, 1);
 
       alert("cookie set");
+      this.$router.push("/Dashboard");
     },
     register() {
       this.$router.push("/Register");

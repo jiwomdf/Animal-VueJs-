@@ -14,14 +14,14 @@
             ></v-text-field>
             <v-text-field
               v-model="form.password"
-              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+              :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'"
               :rules="[rules.requiredPassword, rules.minPassword]"
-              :type="show1 ? 'text' : 'password'"
+              :type="passwordShow ? 'text' : 'password'"
               name="input-10-1"
               label="Password"
               hint="At least 8 characters"
               counter
-              @click:append="show1 = !show1"
+              @click:append="passwordShow = !passwordShow"
             ></v-text-field>
 
             <v-text-field
@@ -54,6 +54,8 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-alert type="error" dismissible v-if="alert_exist_bool">{{alert_exist}}</v-alert>
+    <v-alert type="success" dismissible v-if="alert_sucess_bool">Success</v-alert>
   </v-container>
 </template>
 
@@ -64,6 +66,10 @@ export default {
   name: "Register",
   data() {
     return {
+      passwordShow: false,
+      alert_exist: "",
+      alert_exist_bool: false,
+      alert_sucess_bool: false,
       form: {
         userName: "",
         password: "",
@@ -71,7 +77,6 @@ export default {
         email: "",
         role: []
       },
-      show1: false,
       rules: {
         requiredUserName: value => !!value || "Required.",
         minUserName: v => v.length >= 3 || "Min 3 characters",
@@ -88,6 +93,10 @@ export default {
   }, */
   methods: {
     async register() {
+      this.alert_exist_bool = false;
+      this.alert_exist_bool = false;
+
+      const url = "http://localhost:3000/user/register";
       const user = {
         userName: this.form.userName,
         password: this.form.password,
@@ -95,12 +104,18 @@ export default {
         email: this.form.email,
         role: ["admin"]
       };
+      const headers = {
+        "Content-Type": "application/json"
+      };
 
-      console.log(user);
+      try {
+        const retval = await axios.post(url, user, headers);
 
-      await axios.post("http://localhost:3000/user/register", {
-        user
-      });
+        if (retval.data.status === "200") this.alert_sucess_bool = true;
+      } catch (err) {
+        this.alert_exist_bool = true;
+        this.alert_exist = err;
+      }
     }
   }
 };

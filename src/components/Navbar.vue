@@ -25,7 +25,6 @@ export default {
   },
   computed: {
     isLogin() {
-      console.log(this.$store.state.loginUserName);
       return this.$store.state.loginUserName != "" ? true : false;
     },
   },
@@ -45,7 +44,7 @@ export default {
 
       const url = "http://localhost:3000/auth/logout";
       const data = {
-        userName: this.$store.state.userName,
+        userName: this.$store.state.loginUserName,
         refreshToken: refreshToken,
       };
       const headers = { "Content-Type": "application/json" };
@@ -55,7 +54,6 @@ export default {
       this.$cookie.delete("accessToken");
       this.$cookie.delete("refreshToken");
       this.$store.state.loginUserName = "";
-      window.sessionStorage.clear();
 
       this.$router.push("/");
     },

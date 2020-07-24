@@ -4,6 +4,7 @@
       <v-tab>Landscape</v-tab>
       <v-tab>City</v-tab>
       <v-tab>Abstract</v-tab>
+      <v-tab @click="navigatePost()">Post an Image</v-tab>
 
       <v-tab-item v-for="n in 3" :key="n">
         <v-container>
@@ -26,6 +27,11 @@
 export default {
   data() {
     return {};
-  }
+  },
+  methods: {
+    navigatePost() {
+      this.$router.push("/Post");
+    },
+  },
 };
 </script>

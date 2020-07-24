@@ -7,6 +7,7 @@ module.exports = async (fun, context) => {
     let refreshToken = context.$cookie.get("refreshToken");
 
     try {
+
         const retval = await fun(accessToken)
         console.log(retval);
 
@@ -14,7 +15,7 @@ module.exports = async (fun, context) => {
 
         if (error.response.status == 403) {
             const url = "http://localhost:3000/auth/token/";
-            const data = { userName: loginUserName, refreshToken: refreshToken, };
+            const data = { userName: loginUserName, refreshToken: refreshToken, accessToken: accessToken };
             const headers = { "Content-Type": "application/json", };
 
             let retVal = await axios.post(url, data, headers);

@@ -10,6 +10,7 @@ module.exports = async (fun, context) => {
 
         const retval = await fun(accessToken)
         console.log(retval);
+        return ""
 
     } catch (error) {
 
@@ -24,9 +25,17 @@ module.exports = async (fun, context) => {
             context.$cookie.delete("accessToken");
             context.$cookie.set("accessToken", retVal.data.accessToken);
 
-            const retval = await fun(retVal.data.accessToken)
+            try {
+                const retval = await fun(retVal.data.accessToken)
+                console.log(retval);
+                return ""
+            } catch (err) {
+                return err.response.data.messages
+            }
 
-            console.log(retval);
         }
+        else
+            return error.response.data.messages
+
     }
 }

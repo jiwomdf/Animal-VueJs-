@@ -15,11 +15,8 @@
             <v-text-field
               v-model="form.password"
               :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="[rules.requiredPassword, rules.minPassword]"
               :type="show1 ? 'text' : 'password'"
-              name="input-10-1"
               label="Password"
-              hint="At least 8 characters"
               counter
               @click:append="show1 = !show1"
             ></v-text-field>
@@ -38,6 +35,7 @@
         </v-btn>
       </v-col>
     </v-row>
+    <v-alert type="error" dismissible v-if="alert_exist_bool">{{alert_exist}}</v-alert>
   </v-container>
 </template>
 
@@ -48,6 +46,8 @@ export default {
   name: "Login",
   data() {
     return {
+      alert_exist: "",
+      alert_exist_bool: false,
       form: {
         userName: "",
         password: "",
@@ -56,13 +56,13 @@ export default {
       rules: {
         requiredUserName: (value) => !!value || "Required.",
         minUserName: (v) => v.length >= 3 || "Min 3 characters",
-        requiredPassword: (value) => !!value || "Required.",
-        minPassword: (v) => v.length >= 8 || "Min 8 characters",
       },
     };
   },
   methods: {
     async login() {
+      this.alert_exist_bool = false;
+
       const url = "http://localhost:3000/auth/login";
       const data = {
         userName: this.form.userName,
@@ -71,14 +71,19 @@ export default {
       const headers = {
         "Content-Type": "application/json",
       };
-      const retval = await axios.post(url, data, headers);
 
-      this.$cookie.set("accessToken", retval.data.accessToken, 1);
-      this.$cookie.set("refreshToken", retval.data.refreshToken, 1);
-      this.$store.state.loginUserName = this.form.userName;
+      try {
+        const retval = await axios.post(url, data, headers);
 
-      alert("cookie set");
-      this.$router.push("/Dashboard");
+        this.$cookie.set("accessToken", retval.data.accessToken, 1);
+        this.$cookie.set("refreshToken", retval.data.refreshToken, 1);
+        this.$store.state.loginUserName = this.form.userName;
+
+        this.$router.push("/Dashboard");
+      } catch (err) {
+        this.alert_exist_bool = true;
+        this.alert_exist = err.response.data.messages;
+      }
     },
     register() {
       this.$router.push("/Register");

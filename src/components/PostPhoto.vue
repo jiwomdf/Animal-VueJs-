@@ -9,30 +9,38 @@
 
           <input type="file" ref="file" @change="selectFile()" />
 
-          <v-text-field v-model="title" label="Image Title"></v-text-field>
+          <v-text-field v-model="form.title" label="Image Title"></v-text-field>
 
           <v-overflow-btn
-            v-model="expression"
+            v-model="form.expression"
             :items="dropdown_expression"
             label="Animal Expression"
             target="#dropdown-example"
           ></v-overflow-btn>
 
           <v-overflow-btn
-            v-model="diet"
+            v-model="form.diet"
             :items="dropdown_diet"
             label="Animal Diet"
             target="#dropdown-example"
           ></v-overflow-btn>
 
-          <v-checkbox v-model="isBaby" :label="`is it a Baby? \n ${isBaby.toString()}`"></v-checkbox>
+          <v-checkbox v-model="form.isBaby" :label="`is it a Baby? \n ${form.isBaby.toString()}`"></v-checkbox>
 
           <v-checkbox
-            v-model="isOneAnimal"
-            :label="`is there only one animal on the pic? \n ${isOneAnimal.toString()}`"
+            v-model="form.isOneAnimal"
+            :label="`is there only one animal on the pic? \n ${form.isOneAnimal.toString()}`"
           ></v-checkbox>
 
-          <v-combobox v-model="chips" :items="items" chips clearable label="Tags" multiple solo>
+          <v-combobox
+            v-model="form.chips"
+            :items="items"
+            chips
+            clearable
+            label="Tags"
+            multiple
+            solo
+          >
             <template v-slot:selection="{ attrs, item, select, selected }">
               <v-chip
                 v-bind="attrs"
@@ -50,6 +58,7 @@
         </form>
       </v-col>
     </v-row>
+    <v-alert type="error" dismissible v-if="alert_exist_bool">{{alert_exist}}</v-alert>
   </v-container>
 </template>
 
@@ -61,29 +70,40 @@ export default {
   name: "Main",
   data() {
     return {
-      expression: "",
-      diet: "",
+      alert_exist: "",
+      alert_exist_bool: false,
       dropdown_expression: ["Happy", "Sad", "Inocent", "Cry"],
       dropdown_diet: ["Herbivore", "Carnivore", "Omnivore"],
-      isBaby: false,
-      isOneAnimal: false,
-      title: "",
-      chips: [],
       items: ["Cute", "Solo", "Baby", "Sleeping"],
-      binaryImage: "",
+
+      form: {
+        expression: "",
+        diet: "",
+        isBaby: false,
+        isOneAnimal: false,
+        title: "",
+        chips: [],
+        binaryImage: "",
+      },
     };
   },
   methods: {
     remove(item) {
-      this.chips.splice(this.chips.indexOf(item), 1);
-      this.chips = [...this.chips];
+      this.form.chips.splice(this.form.chips.indexOf(item), 1);
+      this.form.chips = [...this.form.chips];
     },
     selectFile() {
-      this.binaryImage = this.$refs.file.files[0];
+      this.form.binaryImage = this.$refs.file.files[0];
     },
     async postPost() {
+      this.alert_exist_bool = false;
+
       let id = this.makeid(10);
 
+      //this.postData(id);
+      this.postImg(id);
+    },
+    async postData(id) {
       const postData = async (accessToken) => {
         const url = "http://localhost:3000/animal";
         const header = {
@@ -94,20 +114,25 @@ export default {
         };
 
         const data = {
-          name: this.title,
-          expression: this.expression,
-          diet: this.diet,
-          isBaby: this.isBaby,
-          isOneAnimal: this.isOneAnimal,
-          tags: this.chips,
+          name: this.form.title,
+          expression: this.form.expression,
+          diet: this.form.diet,
+          isBaby: this.form.isBaby,
+          isOneAnimal: this.form.isOneAnimal,
+          tags: this.form.chips,
           binaryImage: id,
         };
 
         return axios.post(url, data, header);
       };
 
-      refresher(postData, this);
-
+      let errMsg = await refresher(postData, this);
+      if (errMsg != "") {
+        this.alert_exist_bool = true;
+        this.alert_exist = errMsg;
+      }
+    },
+    async postImg(id) {
       const postImg = async (accessToken) => {
         const formData = new FormData();
         const url = "http://localhost:3000/upload";
@@ -118,12 +143,16 @@ export default {
           },
         };
 
-        formData.append("file", this.binaryImage, id);
+        formData.append("file", this.form.binaryImage, id);
 
         return axios.post(url, formData, header);
       };
 
-      refresher(postImg, this);
+      let errMsg = await refresher(postImg, this);
+      if (errMsg != "") {
+        this.alert_exist_bool = true;
+        this.alert_exist = errMsg;
+      }
     },
     makeid(length) {
       var result = "";

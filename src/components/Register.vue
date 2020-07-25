@@ -39,13 +39,27 @@
               label="Email"
             ></v-text-field>
 
-            <v-text-field
-              v-model="form.role"
-              :rules="[rules.requiredUserName, rules.minUserName]"
-              counter="15"
-              hint="At least 3 characters"
+            <v-combobox
+              v-model="form.chips"
+              :items="form.items"
+              chips
+              clearable
               label="Role"
-            ></v-text-field>
+              multiple
+              solo
+            >
+              <template v-slot:selection="{ attrs, item, select, selected }">
+                <v-chip
+                  v-bind="attrs"
+                  :input-value="selected"
+                  close
+                  @click="select"
+                  @click:close="remove(item)"
+                >
+                  <strong>{{ item }}</strong>
+                </v-chip>
+              </template>
+            </v-combobox>
 
             <v-btn class="mt-4" v-on:click="register()">
               <span class="mr-2">Register</span>
@@ -75,26 +89,25 @@ export default {
         password: "",
         name: "",
         email: "",
-        role: []
+        chips: [],
+        items: ["User"],
       },
       rules: {
-        requiredUserName: value => !!value || "Required.",
-        minUserName: v => v.length >= 3 || "Min 3 characters",
-        requiredPassword: value => !!value || "Required.",
-        minPassword: v => v.length >= 8 || "Min 8 characters"
-      }
+        requiredUserName: (value) => !!value || "Required.",
+        minUserName: (v) => v.length >= 3 || "Min 3 characters",
+        requiredPassword: (value) => !!value || "Required.",
+        minPassword: (v) => v.length >= 8 || "Min 8 characters",
+      },
     };
   },
-  /* validations: {
-    form: {
-      name: { required, isJoe: isNameJoe },
-      email: { required, email, notGmail, isEmailAvailable }
-    }
-  }, */
   methods: {
+    remove(item) {
+      this.form.chips.splice(this.form.chips.indexOf(item), 1);
+      this.form.chips = [...this.form.chips];
+    },
     async register() {
       this.alert_exist_bool = false;
-      this.alert_exist_bool = false;
+      this.alert_sucess_bool = false;
 
       const url = "http://localhost:3000/user/register";
       const user = {
@@ -102,10 +115,10 @@ export default {
         password: this.form.password,
         name: this.form.name,
         email: this.form.email,
-        role: ["admin"]
+        role: ["admin"],
       };
       const headers = {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       };
 
       try {
@@ -114,9 +127,9 @@ export default {
         if (retval.data.status === "200") this.alert_sucess_bool = true;
       } catch (err) {
         this.alert_exist_bool = true;
-        this.alert_exist = err;
+        this.alert_exist = err.response.data.messages;
       }
-    }
-  }
+    },
+  },
 };
 </script>

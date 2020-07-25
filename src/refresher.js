@@ -14,6 +14,7 @@ module.exports = async (fun, context) => {
 
     } catch (error) {
 
+        console.log(error)
         if (error.response.status == 403) {
             const url = "http://localhost:3000/auth/token/";
             const data = { userName: loginUserName, refreshToken: refreshToken, accessToken: accessToken };

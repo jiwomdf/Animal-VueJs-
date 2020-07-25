@@ -54,6 +54,14 @@
             </template>
           </v-combobox>
 
+          <v-textarea
+            v-model="form.story"
+            label="Tell about this pic!"
+            counter
+            maxlength="100"
+            full-width
+          ></v-textarea>
+
           <button v-on:click="postPost()">Post Animal!</button>
         </form>
       </v-col>
@@ -84,6 +92,8 @@ export default {
         title: "",
         chips: [],
         binaryImage: "",
+        userName: "",
+        story: "",
       },
     };
   },
@@ -94,16 +104,23 @@ export default {
     },
     selectFile() {
       this.form.binaryImage = this.$refs.file.files[0];
+      console.log(this.form.binaryImage);
     },
     async postPost() {
       this.alert_exist_bool = false;
 
       let id = this.makeid(10);
 
-      //this.postData(id);
-      this.postImg(id);
+      let isValid = await this.postImg(id);
+
+      if (isValid) {
+        await this.postData(id);
+        this.$router.push("/Dashboard");
+      }
     },
     async postData(id) {
+      console.log("ASUP");
+
       const postData = async (accessToken) => {
         const url = "http://localhost:3000/animal";
         const header = {
@@ -121,6 +138,8 @@ export default {
           isOneAnimal: this.form.isOneAnimal,
           tags: this.form.chips,
           binaryImage: id,
+          userName: this.$store.state.loginUserName,
+          story: this.form.story,
         };
 
         return axios.post(url, data, header);
@@ -130,12 +149,13 @@ export default {
       if (errMsg != "") {
         this.alert_exist_bool = true;
         this.alert_exist = errMsg;
-      }
+        return false;
+      } else return true;
     },
     async postImg(id) {
       const postImg = async (accessToken) => {
         const formData = new FormData();
-        const url = "http://localhost:3000/upload";
+        const url = "http://localhost:3000/image";
         const header = {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -152,19 +172,22 @@ export default {
       if (errMsg != "") {
         this.alert_exist_bool = true;
         this.alert_exist = errMsg;
-      }
+        return false;
+      } else return true;
     },
     makeid(length) {
-      var result = "";
-      var characters =
+      let result = "";
+      let characters =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      var charactersLength = characters.length;
-      for (var i = 0; i < length; i++) {
+      let charactersLength = characters.length;
+      for (let i = 0; i < length; i++) {
         result += characters.charAt(
           Math.floor(Math.random() * charactersLength)
         );
       }
-      return result;
+
+      let dateCreated = new Date().toISOString();
+      return dateCreated + result;
     },
   },
 };

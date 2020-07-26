@@ -4,66 +4,58 @@
       <v-col cols="12" sm="10" md="8" lg="6">
         <h1>Post an Animal Photo</h1>
         <br />
-        <form enctype="multipart/form-data">
-          <!-- <v-file-input v-model="binaryImage" show-size label="Upload Image"></v-file-input> -->
+        <!-- <form enctype="multipart/form-data"> -->
+        <!-- <v-file-input v-model="binaryImage" show-size label="Upload Image"></v-file-input> -->
 
-          <input type="file" ref="file" @change="selectFile()" />
+        <input type="file" ref="file" @change="selectFile()" />
 
-          <v-text-field v-model="form.title" label="Image Title"></v-text-field>
+        <v-text-field v-model="form.title" label="Image Title"></v-text-field>
 
-          <v-overflow-btn
-            v-model="form.expression"
-            :items="dropdown_expression"
-            label="Animal Expression"
-            target="#dropdown-example"
-          ></v-overflow-btn>
+        <v-overflow-btn
+          v-model="form.expression"
+          :items="dropdown_expression"
+          label="Animal Expression"
+          target="#dropdown-example"
+        ></v-overflow-btn>
 
-          <v-overflow-btn
-            v-model="form.diet"
-            :items="dropdown_diet"
-            label="Animal Diet"
-            target="#dropdown-example"
-          ></v-overflow-btn>
+        <v-overflow-btn
+          v-model="form.diet"
+          :items="dropdown_diet"
+          label="Animal Diet"
+          target="#dropdown-example"
+        ></v-overflow-btn>
 
-          <v-checkbox v-model="form.isBaby" :label="`is it a Baby? \n ${form.isBaby.toString()}`"></v-checkbox>
+        <v-checkbox v-model="form.isBaby" :label="`is it a Baby? \n ${form.isBaby.toString()}`"></v-checkbox>
 
-          <v-checkbox
-            v-model="form.isOneAnimal"
-            :label="`is there only one animal on the pic? \n ${form.isOneAnimal.toString()}`"
-          ></v-checkbox>
+        <v-checkbox
+          v-model="form.isOneAnimal"
+          :label="`is there only one animal on the pic? \n ${form.isOneAnimal.toString()}`"
+        ></v-checkbox>
 
-          <v-combobox
-            v-model="form.chips"
-            :items="items"
-            chips
-            clearable
-            label="Tags"
-            multiple
-            solo
-          >
-            <template v-slot:selection="{ attrs, item, select, selected }">
-              <v-chip
-                v-bind="attrs"
-                :input-value="selected"
-                close
-                @click="select"
-                @click:close="remove(item)"
-              >
-                <strong>{{ item }}</strong>
-              </v-chip>
-            </template>
-          </v-combobox>
+        <v-combobox v-model="form.chips" :items="items" chips clearable label="Tags" multiple solo>
+          <template v-slot:selection="{ attrs, item, select, selected }">
+            <v-chip
+              v-bind="attrs"
+              :input-value="selected"
+              close
+              @click="select"
+              @click:close="remove(item)"
+            >
+              <strong>{{ item }}</strong>
+            </v-chip>
+          </template>
+        </v-combobox>
 
-          <v-textarea
-            v-model="form.story"
-            label="Tell about this pic!"
-            counter
-            maxlength="100"
-            full-width
-          ></v-textarea>
+        <v-textarea
+          v-model="form.story"
+          label="Tell about this pic!"
+          counter
+          maxlength="100"
+          full-width
+        ></v-textarea>
 
-          <button v-on:click="postPost()">Post Animal!</button>
-        </form>
+        <button v-on:click="postPost()">Post Animal!</button>
+        <!-- </form> -->
       </v-col>
     </v-row>
     <v-alert type="error" dismissible v-if="alert_exist_bool">{{alert_exist}}</v-alert>
@@ -104,7 +96,6 @@ export default {
     },
     selectFile() {
       this.form.binaryImage = this.$refs.file.files[0];
-      console.log(this.form.binaryImage);
     },
     async postPost() {
       this.alert_exist_bool = false;
@@ -113,14 +104,14 @@ export default {
 
       let isValid = await this.postImg(id);
 
+      console.log(isValid);
+
       if (isValid) {
         await this.postData(id);
         this.$router.push("/Dashboard");
       }
     },
     async postData(id) {
-      console.log("ASUP");
-
       const postData = async (accessToken) => {
         const url = "http://localhost:3000/animal";
         const header = {
@@ -138,7 +129,7 @@ export default {
           isOneAnimal: this.form.isOneAnimal,
           tags: this.form.chips,
           binaryImage: id,
-          userName: this.$store.state.loginUserName,
+          userName: this.$store.getters.getLogin,
           story: this.form.story,
         };
 
@@ -159,7 +150,8 @@ export default {
         const header = {
           headers: {
             Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
+            "Accept-Language": "en-US,en;q=0.8",
+            "Content-Type": `multipart/form-data; boundary=${formData._boundary}`,
           },
         };
 
@@ -169,6 +161,10 @@ export default {
       };
 
       let errMsg = await refresher(postImg, this);
+
+      console.log(errMsg);
+      console.log("END");
+
       if (errMsg != "") {
         this.alert_exist_bool = true;
         this.alert_exist = errMsg;
@@ -186,8 +182,9 @@ export default {
         );
       }
 
-      let dateCreated = new Date().toISOString();
-      return dateCreated + result;
+      let unix_seconds = new Date().getTime() / 1000;
+
+      return unix_seconds + result;
     },
   },
 };

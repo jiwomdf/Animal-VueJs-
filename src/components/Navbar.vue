@@ -25,7 +25,7 @@ export default {
   },
   computed: {
     isLogin() {
-      return this.$store.state.loginUserName != "" ? true : false;
+      return this.$store.getters.getLogin != "" ? true : false;
     },
   },
   methods: {
@@ -34,7 +34,7 @@ export default {
       let refreshToken = this.$cookie.get("refreshToken");
 
       if (accessToken == null || refreshToken == null)
-        this.$store.state.loginUserName = "";
+        this.$store.getters.getLogin = "";
     },
     login() {
       this.$router.push("/Login");
@@ -42,20 +42,24 @@ export default {
     logout() {
       let refreshToken = this.$cookie.get("refreshToken");
 
-      const url = "http://localhost:3000/auth/logout";
-      const data = {
-        userName: this.$store.state.loginUserName,
-        refreshToken: refreshToken,
-      };
-      const headers = { "Content-Type": "application/json" };
+      try {
+        const url = "http://localhost:3000/auth/logout";
+        const data = {
+          userName: this.$store.getters.getLogin,
+          refreshToken: refreshToken,
+        };
+        const headers = { "Content-Type": "application/json" };
 
-      axios.post(url, data, headers);
+        axios.post(url, data, headers);
 
-      this.$cookie.delete("accessToken");
-      this.$cookie.delete("refreshToken");
-      this.$store.state.loginUserName = "";
+        this.$cookie.delete("accessToken");
+        this.$cookie.delete("refreshToken");
+        this.$store.commit("delLogin");
 
-      this.$router.push("/");
+        this.$router.push("/");
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
 };

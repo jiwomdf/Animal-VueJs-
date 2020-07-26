@@ -77,7 +77,8 @@ export default {
 
         this.$cookie.set("accessToken", retval.data.accessToken, 1);
         this.$cookie.set("refreshToken", retval.data.refreshToken, 1);
-        this.$store.state.loginUserName = this.form.userName;
+
+        this.$store.commit("setLogin", this.form.userName);
 
         this.$router.push("/Dashboard");
       } catch (err) {

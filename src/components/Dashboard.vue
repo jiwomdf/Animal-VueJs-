@@ -50,9 +50,13 @@ export default {
   async mounted() {
     const url = "http://localhost:3000/animal/picture/";
 
-    let retval = await axios.post(url);
+    try {
+      let retval = await axios.post(url);
 
-    this.listdata = retval.data.data;
+      this.listdata = retval.data.data;
+    } catch (err) {
+      console.log(err);
+    }
   },
   methods: {
     navigatePost() {

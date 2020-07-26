@@ -3,7 +3,7 @@ const axios = require("axios");
 module.exports = async (fun, context) => {
 
     let accessToken = context.$cookie.get("accessToken");
-    let loginUserName = context.$store.state.loginUserName;
+    let loginUserName = context.$store.getters.getLogin;
     let refreshToken = context.$cookie.get("refreshToken");
 
     try {

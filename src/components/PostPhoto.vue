@@ -64,7 +64,7 @@
 
 <script>
 const axios = require("axios");
-const refresher = require("../refresher");
+const postRefresher = require("../postRefresher");
 
 export default {
   name: "Main",
@@ -101,10 +101,7 @@ export default {
       this.alert_exist_bool = false;
 
       let id = this.makeid(10);
-
       let isValid = await this.postImg(id);
-
-      console.log(isValid);
 
       if (isValid) {
         await this.postData(id);
@@ -136,12 +133,9 @@ export default {
         return axios.post(url, data, header);
       };
 
-      let errMsg = await refresher(postData, this);
-      if (errMsg != "") {
-        this.alert_exist_bool = true;
-        this.alert_exist = errMsg;
-        return false;
-      } else return true;
+      let retVal = await postRefresher(postData, this);
+
+      return this.validateRetVal(retVal);
     },
     async postImg(id) {
       const postImg = async (accessToken) => {
@@ -160,14 +154,14 @@ export default {
         return axios.post(url, formData, header);
       };
 
-      let errMsg = await refresher(postImg, this);
+      let retVal = await postRefresher(postImg, this);
 
-      console.log(errMsg);
-      console.log("END");
-
-      if (errMsg != "") {
+      return this.validateRetVal(retVal);
+    },
+    async validateRetVal(retVal) {
+      if (!retVal.isComplete) {
         this.alert_exist_bool = true;
-        this.alert_exist = errMsg;
+        this.alert_exist = retVal.msg;
         return false;
       } else return true;
     },

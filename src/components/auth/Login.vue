@@ -83,7 +83,7 @@ export default {
         this.$router.push("/Dashboard");
       } catch (err) {
         this.alert_exist_bool = true;
-        this.alert_exist = err.response.data.messages;
+        this.alert_exist = "Username or Password is incorrect";
       }
     },
     register() {

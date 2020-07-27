@@ -8,31 +8,31 @@ module.exports = async (fun, context) => {
 
     try {
 
-        let retVal = await fun(accessToken)
-        return { isComplete: true, data: retVal, msg: "" }
+        await fun(accessToken)
+        return { isComplete: true, msg: "" }
 
     } catch (error) {
 
-        // if (error.response == undefined)
-        //     return { isComplete: false, data: "", msg: "error.response == undefined" }
+        if (error.response == undefined)
+            return { isComplete: false, data: "", msg: "Image is empty" }
 
         if (error.response.status == 403) {
 
             let newToken = await syncToken(loginUserName, refreshToken, accessToken, context)
 
             if (newToken == null)
-                return { isComplete: false, data: "", msg: "error authenticate user" }
+                return { isComplete: false, msg: "error authenticate user" }
 
             try {
-                let retVal = await fun(newToken.data.accessToken)
-                return { isComplete: true, data: retVal, msg: "" }
+                await fun(newToken.data.accessToken)
+                return { isComplete: true, msg: "" }
             } catch (err) {
-                return { isComplete: false, data: null, msg: err.response.data.messages }
+                return { isComplete: false, msg: err.response.data.messages }
             }
         }
         else {
             console.log(error)
-            return { isComplete: false, data: null, msg: error.response.data.messages }
+            return { isComplete: false, msg: error.response.data.messages }
         }
 
     }

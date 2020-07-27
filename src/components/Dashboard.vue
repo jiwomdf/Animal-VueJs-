@@ -13,29 +13,30 @@
 
                   <v-list-item-content class="ml-3">
                     <v-list-item-title class="title">{{this.$store.getters.getLogin}}</v-list-item-title>
-                    <v-list-item-subtitle>Photos</v-list-item-subtitle>
+                    <v-list-item-subtitle>as User</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
               </v-col>
             </v-row>
-          </v-col>
-          <v-col>
-            <v-btn
-              class="mt-1"
-              fab
-              style="float:right;"
-              color="deep-purple accent-4"
-              dark
-              v-on:click="navigatePost()"
-            >
-              <v-icon dark>mdi-plus</v-icon>
-            </v-btn>
           </v-col>
         </v-row>
       </v-col>
     </v-row>
     <v-row justify="center">
       <v-col>
+        <v-btn class="mb-5" text v-on:click="navigatePublicApi()">See public API List</v-btn>
+        <v-btn class="mb-5" text>Feedback to developers</v-btn>
+        <v-btn
+          class="mb-5"
+          style="float:right;"
+          color="deep-purple accent-4"
+          dark
+          v-on:click="navigatePost()"
+        >
+          Post photo
+          <v-icon dark right>mdi-plus</v-icon>
+        </v-btn>
+
         <v-card ref="form">
           <v-card>
             <v-tabs background-color="white" color="deep-purple accent-4" centered>
@@ -51,6 +52,7 @@
                         :src="data.imagePath"
                         :lazy-src="data.imagePath"
                         aspect-ratio="1"
+                        v-on:click="openNewTab(data.imagePath)"
                       >
                         <v-card-title>{{data.name}}</v-card-title>
                       </v-img>
@@ -63,6 +65,7 @@
                         :src="data.imagePath"
                         :lazy-src="data.imagePath"
                         aspect-ratio="1"
+                        v-on:click="openNewTab(data.imagePath)"
                       >
                         <v-btn
                           class="mt-3"
@@ -89,8 +92,8 @@
 
 <script>
 const axios = require("axios");
-const returnRefresher = require("../returnRefresher");
-const postRefresher = require("../postRefresher");
+const returnRefresher = require("../util/returnRefresher");
+const postRefresher = require("../util/postRefresher");
 
 export default {
   data() {
@@ -100,34 +103,43 @@ export default {
     };
   },
   async mounted() {
-    const exploreUrl = "http://localhost:3000/animal/picture/";
-
-    try {
-      let exploreData = await axios.post(exploreUrl);
-      this.listdata = exploreData.data.data;
-    } catch (err) {
-      console.log(err);
-    }
-
-    const getMyPostData = async (accessToken) => {
-      const mypostUrl = `http://localhost:3000/animal/picture/${this.$store.getters.getLogin}`;
-      const header = {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-      };
-
-      return axios.post(mypostUrl, {}, header);
-    };
-
-    let myPostData = await returnRefresher(getMyPostData, this);
-
-    if (myPostData.isComplete) this.mydata = myPostData.data.data.data;
+    this.init();
   },
   methods: {
+    navigatePublicApi() {
+      this.$router.push("/ApiDocumentation");
+    },
     navigatePost() {
       this.$router.push("/Post");
+    },
+    openNewTab(url) {
+      window.open(url, "_blank");
+    },
+    async init() {
+      const exploreUrl = "http://localhost:3000/animal/picture/";
+
+      try {
+        let exploreData = await axios.post(exploreUrl);
+        this.listdata = exploreData.data.data;
+      } catch (err) {
+        console.log(err);
+      }
+
+      const getMyPostData = async (accessToken) => {
+        const mypostUrl = `http://localhost:3000/animal/picture/${this.$store.getters.getLogin}`;
+        const header = {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        };
+
+        return axios.post(mypostUrl, {}, header);
+      };
+
+      let myPostData = await returnRefresher(getMyPostData, this);
+
+      if (myPostData.isComplete) this.mydata = myPostData.data.data.data;
     },
     async deletePost(selData) {
       let confrim = confirm("Are you sure?");
@@ -138,7 +150,8 @@ export default {
 
       if (isComplete) {
         await this.deleteImage(selData);
-        this.$router.go();
+
+        await this.init();
       }
     },
     async deleteAnimal(selData) {

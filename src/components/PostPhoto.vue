@@ -5,9 +5,9 @@
         <h1>Post an Animal Photo</h1>
         <br />
         <!-- <form enctype="multipart/form-data"> -->
-        <!-- <v-file-input v-model="binaryImage" show-size label="Upload Image"></v-file-input> -->
+        <v-file-input v-model="form.binaryImage" show-size label="Upload Image"></v-file-input>
 
-        <input type="file" ref="file" @change="selectFile()" />
+        <!-- <input type="file" ref="file" @change="selectFile()" /> -->
 
         <v-text-field v-model="form.title" label="Image Title"></v-text-field>
 
@@ -56,7 +56,7 @@
       <v-col>
         <v-dialog v-model="alert_exist_bool" max-width="290">
           <v-card color="red" dark>
-            <v-card-title class="headline">Error!</v-card-title>
+            <v-card-title class="headline">Something wrong!</v-card-title>
 
             <v-card-text>{{alert_exist}}</v-card-text>
           </v-card>
@@ -68,7 +68,7 @@
 
 <script>
 const axios = require("axios");
-const postRefresher = require("../postRefresher");
+const postRefresher = require("../util/postRefresher");
 
 export default {
   name: "Main",
@@ -87,7 +87,7 @@ export default {
         isOneAnimal: false,
         title: "",
         chips: [],
-        binaryImage: "",
+        binaryImage: [],
         userName: "",
         story: "",
       },
@@ -98,13 +98,13 @@ export default {
       this.form.chips.splice(this.form.chips.indexOf(item), 1);
       this.form.chips = [...this.form.chips];
     },
-    selectFile() {
+    /*selectFile() {
       this.form.binaryImage = this.$refs.file.files[0];
-    },
+    },*/
     async postPost() {
       this.alert_exist_bool = false;
 
-      if (this.form.binaryImage == "")
+      if (this.form.binaryImage == [])
         this.validateRetVal({ isComplete: false, msg: "empty photo" });
 
       let id = this.makeid(10);

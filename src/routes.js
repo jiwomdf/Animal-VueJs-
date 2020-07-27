@@ -1,8 +1,9 @@
 import Main from "./components/Main.vue"
 import Dashboard from "./components/Dashboard.vue";
-import Login from "./components/Login.vue";
-import Register from "./components/Register.vue"
+import Login from "./components/auth/Login.vue";
+import Register from "./components/auth/Register.vue"
 import PostPhoto from "./components/PostPhoto.vue"
+import ApiDocumentation from "./components/ApiDocumentation.vue"
 
 export default [
     {
@@ -30,5 +31,8 @@ export default [
         meta: {
             requiresAuth: true
         }
+    }, {
+        path: "/ApiDocumentation",
+        component: ApiDocumentation,
     }
 ]

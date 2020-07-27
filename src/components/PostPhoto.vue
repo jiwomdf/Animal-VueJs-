@@ -46,19 +46,23 @@
           </template>
         </v-combobox>
 
-        <v-textarea
-          v-model="form.story"
-          label="Tell about this pic!"
-          counter
-          maxlength="100"
-          full-width
-        ></v-textarea>
+        <v-textarea v-model="form.story" label="Tell about this pic!" counter maxlength="100"></v-textarea>
 
         <button v-on:click="postPost()">Post Animal!</button>
         <!-- </form> -->
       </v-col>
     </v-row>
-    <v-alert type="error" dismissible v-if="alert_exist_bool">{{alert_exist}}</v-alert>
+    <v-row justify="center">
+      <v-col>
+        <v-dialog v-model="alert_exist_bool" max-width="290">
+          <v-card color="red" dark>
+            <v-card-title class="headline">Error!</v-card-title>
+
+            <v-card-text>{{alert_exist}}</v-card-text>
+          </v-card>
+        </v-dialog>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -100,13 +104,15 @@ export default {
     async postPost() {
       this.alert_exist_bool = false;
 
-      let id = this.makeid(10);
-      let isValid = await this.postImg(id);
+      if (this.form.binaryImage == "")
+        this.validateRetVal({ isComplete: false, msg: "empty photo" });
 
-      if (isValid) {
-        await this.postData(id);
-        this.$router.push("/Dashboard");
-      }
+      let id = this.makeid(10);
+      let isDataPosted = await this.postData(id);
+
+      let isImgPosted = await this.postImg(id);
+
+      if (isDataPosted && isImgPosted) this.$router.push("/Dashboard");
     },
     async postData(id) {
       const postData = async (accessToken) => {

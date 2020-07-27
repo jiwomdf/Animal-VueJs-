@@ -13,6 +13,9 @@ module.exports = async (fun, context) => {
 
     } catch (error) {
 
+        // if (error.response == undefined)
+        //     return { isComplete: false, data: "", msg: "error.response == undefined" }
+
         if (error.response.status == 403) {
 
             let newToken = await syncToken(loginUserName, refreshToken, accessToken, context)

@@ -4,8 +4,20 @@
       <v-col>
         <v-row>
           <v-col>
-            <h1 class="mb-2">Dashboard</h1>
-            <span class="mb-2">Welcome {{this.$store.getters.getLogin}}!</span>
+            <v-row>
+              <v-col>
+                <v-list-item>
+                  <v-avatar color="teal accent-4">
+                    <v-icon dark>mdi-account-circle</v-icon>
+                  </v-avatar>
+
+                  <v-list-item-content class="ml-3">
+                    <v-list-item-title class="title">{{this.$store.getters.getLogin}}</v-list-item-title>
+                    <v-list-item-subtitle>Photos</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+            </v-row>
           </v-col>
           <v-col>
             <v-btn
@@ -52,7 +64,16 @@
                         :lazy-src="data.imagePath"
                         aspect-ratio="1"
                       >
-                        <v-card-title>{{data.name}}</v-card-title>
+                        <v-btn
+                          class="mt-3"
+                          text
+                          color="rgba(255,255,255,0.3)"
+                          style="float:right;"
+                          v-on:click="deletePost(data)"
+                        >
+                          <v-icon color="white">mdi-delete</v-icon>
+                        </v-btn>
+                        <v-card-title class>{{data.name}}</v-card-title>
                       </v-img>
                     </v-col>
                   </v-row>
@@ -69,6 +90,7 @@
 <script>
 const axios = require("axios");
 const returnRefresher = require("../returnRefresher");
+const postRefresher = require("../postRefresher");
 
 export default {
   data() {
@@ -106,6 +128,61 @@ export default {
   methods: {
     navigatePost() {
       this.$router.push("/Post");
+    },
+    async deletePost(selData) {
+      let confrim = confirm("Are you sure?");
+
+      if (!confrim) return;
+
+      const isComplete = await this.deleteAnimal(selData);
+
+      if (isComplete) {
+        await this.deleteImage(selData);
+        this.$router.go();
+      }
+    },
+    async deleteAnimal(selData) {
+      const deleteAnimal = async (accessToken) => {
+        const url = `http://localhost:3000/animal/${selData.animalID}`;
+        const header = {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+
+        return axios.delete(url, header);
+      };
+
+      let myPostData = await postRefresher(deleteAnimal, this);
+
+      if (myPostData.isComplete) return true;
+      else return false;
+    },
+    async deleteImage(selData) {
+      const data = {
+        animalID: selData.animalID,
+        binaryImage: selData.binaryImage,
+        destination: selData.destination,
+        imagePath: selData.imagePath,
+        imgID: selData.imgID,
+      };
+
+      const deleteImage = async (accessToken) => {
+        const url = `http://localhost:3000/image/${selData.imgID}`;
+        const header = {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        };
+
+        return axios.delete(url, header, data);
+      };
+
+      let myPostData = await postRefresher(deleteImage, this);
+
+      if (myPostData.isComplete) return true;
+      else return false;
     },
   },
 };

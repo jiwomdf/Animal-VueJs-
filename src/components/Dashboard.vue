@@ -47,37 +47,40 @@
                 <v-container>
                   <v-row v-if="n == 1">
                     <v-col v-for="(data, idx) in listdata" :key="idx" cols="12" md="4">
-                      <v-img
-                        class="white--text align-end"
-                        :src="data.imagePath"
-                        :lazy-src="data.imagePath"
-                        aspect-ratio="1"
-                        v-on:click="openNewTab(data.imagePath)"
-                      >
-                        <v-card-title>{{data.name}}</v-card-title>
-                      </v-img>
+                      <v-card>
+                        <v-img
+                          class="white--text align-end"
+                          :src="data.imagePath"
+                          :lazy-src="data.imagePath"
+                          aspect-ratio="1"
+                          v-on:click="openDetailImg(data)"
+                        >
+                          <v-card-title>{{data.name}}</v-card-title>
+                        </v-img>
+                      </v-card>
                     </v-col>
                   </v-row>
                   <v-row v-if="n == 2">
                     <v-col v-for="(data, idx) in mydata" :key="idx" cols="12" md="4">
-                      <v-img
-                        class="white--text align-end"
-                        :src="data.imagePath"
-                        :lazy-src="data.imagePath"
-                        aspect-ratio="1"
-                        v-on:click="openNewTab(data.imagePath)"
-                      >
-                        <v-btn
-                          class="mt-3"
-                          text
-                          color="rgba(255,255,255,0.3)"
-                          style="float:right;"
-                          v-on:click="deletePost(data)"
+                      <v-card>
+                        <v-img
+                          class="white--text align-end"
+                          :src="data.imagePath"
+                          :lazy-src="data.imagePath"
+                          aspect-ratio="1"
                         >
-                          <v-icon color="white">mdi-delete</v-icon>
-                        </v-btn>
-                        <v-card-title class>{{data.name}}</v-card-title>
-                      </v-img>
+                          <v-btn
+                            class="mt-3"
+                            text
+                            color="rgba(255,255,255,0.3)"
+                            style="float:right;"
+                            v-on:click="deletePost(data)"
+                          >
+                            <v-icon color="white">mdi-delete</v-icon>
+                          </v-btn>
+                          <v-card-title class>{{data.name}}</v-card-title>
+                        </v-img>
+                      </v-card>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -85,6 +88,40 @@
             </v-tabs>
           </v-card>
         </v-card>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-bottom-sheet v-model="sheet" class="m-10" inset>
+          <v-sheet min-height="800px">
+            <br />
+            <center>
+              <v-card max-width="350" max-height="350">
+                <v-img
+                  max-width="350"
+                  max-height="350"
+                  class="white--text"
+                  :src="selData.imagePath"
+                  :lazy-src="selData.imagePath"
+                  aspect-ratio="1"
+                ></v-img>
+              </v-card>
+            </center>
+            <br />
+            <h5
+              style="color:indigo; text-align: center; cursor:pointer"
+              v-on:click="openNewTab(selData.imagePath)"
+              class="ml-4"
+            >Open Image</h5>
+            <br />
+
+            <hr />
+            <br />
+
+            <h3 class="ml-4">{{selData.name}}</h3>
+            <p class="ml-4">{{selData.story ? selData.story : "No story for this picture.."}}</p>
+          </v-sheet>
+        </v-bottom-sheet>
       </v-col>
     </v-row>
   </v-container>
@@ -98,6 +135,8 @@ const postRefresher = require("../util/postRefresher");
 export default {
   data() {
     return {
+      sheet: false,
+      selData: {},
       listdata: [],
       mydata: [],
     };
@@ -111,6 +150,10 @@ export default {
     },
     navigatePost() {
       this.$router.push("/Post");
+    },
+    openDetailImg(data) {
+      this.sheet = !this.sheet;
+      this.selData = data;
     },
     openNewTab(url) {
       window.open(url, "_blank");
@@ -145,7 +188,6 @@ export default {
       let confrim = confirm("Are you sure?");
 
       if (!confrim) return;
-
       const isComplete = await this.deleteAnimal(selData);
 
       if (isComplete) {

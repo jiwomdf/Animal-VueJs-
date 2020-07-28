@@ -12,6 +12,7 @@
               hint="At least 3 characters"
               label="Username"
             ></v-text-field>
+
             <v-text-field
               v-model="form.password"
               :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -20,6 +21,18 @@
               counter
               @click:append="show1 = !show1"
             ></v-text-field>
+
+            <!-- <div
+              class="g-recaptcha"
+              ref="recaptcha"
+              data-sitekey="6LcLNLcZAAAAALFT7ZNxJY9BvCBiYCxAPdz7Je5R"
+            ></div>-->
+
+            <vue-recaptcha
+              ref="recaptcha"
+              @verify="setCaptchaValue"
+              sitekey="6LcLNLcZAAAAALFT7ZNxJY9BvCBiYCxAPdz7Je5R"
+            ></vue-recaptcha>
 
             <v-btn class="mt-4" v-on:click="login()">
               <span class="mr-2">Login</span>
@@ -41,9 +54,16 @@
 
 <script>
 const axios = require("axios");
+import VueRecaptcha from "vue-recaptcha";
 
 export default {
   name: "Login",
+  components: {
+    "vue-recaptcha": VueRecaptcha,
+  },
+  mounted() {
+    // this.$refs.recaptcha.execute();
+  },
   data() {
     return {
       alert_exist: "",
@@ -53,6 +73,7 @@ export default {
         password: "",
       },
       show1: false,
+      captchaVal: "",
       rules: {
         requiredUserName: (value) => !!value || "Required.",
         minUserName: (v) => v.length >= 3 || "Min 3 characters",
@@ -60,13 +81,19 @@ export default {
     };
   },
   methods: {
+    setCaptchaValue(captchaVal) {
+      this.captchaVal = captchaVal;
+    },
     async login() {
       this.alert_exist_bool = false;
+
+      const captcha = this.captchaVal;
 
       const url = "http://localhost:3000/auth/login";
       const data = {
         userName: this.form.userName,
         password: this.form.password,
+        captcha: captcha,
       };
       const headers = {
         "Content-Type": "application/json",
@@ -83,7 +110,9 @@ export default {
         this.$router.push("/Dashboard");
       } catch (err) {
         this.alert_exist_bool = true;
-        this.alert_exist = "Username or Password is incorrect";
+        this.alert_exist = err.response.data.messages;
+
+        this.$refs.recaptcha.reset();
       }
     },
     register() {

@@ -110,9 +110,12 @@ export default {
       let id = this.makeid(10);
       let isDataPosted = await this.postData(id);
 
-      let isImgPosted = await this.postImg(id);
+      if (isDataPosted) {
+        let isImgPosted = await this.postImg(id);
 
-      if (isDataPosted && isImgPosted) this.$router.push("/Dashboard");
+        if (isImgPosted) this.$router.push("/Dashboard");
+        //else rollback the DataPosted
+      }
     },
     async postData(id) {
       const postData = async (accessToken) => {

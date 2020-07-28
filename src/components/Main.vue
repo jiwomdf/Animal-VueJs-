@@ -23,54 +23,62 @@
                 <v-container>
                   <v-row v-if="n == 1">
                     <v-col v-for="(data, idx) in listdata" :key="idx" cols="12" md="4">
-                      <v-img
-                        class="white--text align-end"
-                        :src="data.imagePath"
-                        :lazy-src="data.imagePath"
-                        aspect-ratio="1"
-                        v-on:click="openNewTab(data.imagePath)"
-                      >
-                        <v-card-title>{{data.name}}</v-card-title>
-                      </v-img>
+                      <v-card>
+                        <v-img
+                          class="white--text align-end"
+                          :src="data.imagePath"
+                          :lazy-src="data.imagePath"
+                          aspect-ratio="1"
+                          v-on:click="openDetailImg(data)"
+                        >
+                          <v-card-title>{{data.name}}</v-card-title>
+                        </v-img>
+                      </v-card>
                     </v-col>
                   </v-row>
                   <v-row v-if="n == 2">
                     <v-col v-for="(data, idx) in listdataBaby" :key="idx" cols="12" md="4">
-                      <v-img
-                        class="white--text align-end"
-                        :src="data.imagePath"
-                        :lazy-src="data.imagePath"
-                        aspect-ratio="1"
-                        v-on:click="openNewTab(data.imagePath)"
-                      >
-                        <v-card-title>{{data.name}}</v-card-title>
-                      </v-img>
+                      <v-card>
+                        <v-img
+                          class="white--text align-end"
+                          :src="data.imagePath"
+                          :lazy-src="data.imagePath"
+                          aspect-ratio="1"
+                          v-on:click="openDetailImg(data)"
+                        >
+                          <v-card-title>{{data.name}}</v-card-title>
+                        </v-img>
+                      </v-card>
                     </v-col>
                   </v-row>
                   <v-row v-if="n == 3">
                     <v-col v-for="(data, idx) in listdataSolo" :key="idx" cols="12" md="4">
-                      <v-img
-                        class="white--text align-end"
-                        :src="data.imagePath"
-                        :lazy-src="data.imagePath"
-                        aspect-ratio="1"
-                        v-on:click="openNewTab(data.imagePath)"
-                      >
-                        <v-card-title>{{data.name}}</v-card-title>
-                      </v-img>
+                      <v-card>
+                        <v-img
+                          class="white--text align-end"
+                          :src="data.imagePath"
+                          :lazy-src="data.imagePath"
+                          aspect-ratio="1"
+                          v-on:click="openDetailImg(data)"
+                        >
+                          <v-card-title>{{data.name}}</v-card-title>
+                        </v-img>
+                      </v-card>
                     </v-col>
                   </v-row>
                   <v-row v-if="n == 4">
                     <v-col v-for="(data, idx) in listdataMany" :key="idx" cols="12" md="4">
-                      <v-img
-                        class="white--text align-end"
-                        :src="data.imagePath"
-                        :lazy-src="data.imagePath"
-                        aspect-ratio="1"
-                        v-on:click="openNewTab(data.imagePath)"
-                      >
-                        <v-card-title>{{data.name}}</v-card-title>
-                      </v-img>
+                      <v-card>
+                        <v-img
+                          class="white--text align-end"
+                          :src="data.imagePath"
+                          :lazy-src="data.imagePath"
+                          aspect-ratio="1"
+                          v-on:click="openDetailImg(data)"
+                        >
+                          <v-card-title>{{data.name}}</v-card-title>
+                        </v-img>
+                      </v-card>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -78,6 +86,40 @@
             </v-tabs>
           </v-card>
         </v-card>
+      </v-col>
+    </v-row>
+    <v-row justify="center">
+      <v-col>
+        <v-bottom-sheet v-model="sheet" class="m-10" inset>
+          <v-sheet min-height="800px">
+            <br />
+            <center>
+              <v-card max-width="350" max-height="350">
+                <v-img
+                  max-width="350"
+                  max-height="350"
+                  class="white--text"
+                  :src="selData.imagePath"
+                  :lazy-src="selData.imagePath"
+                  aspect-ratio="1"
+                ></v-img>
+              </v-card>
+            </center>
+            <br />
+            <h5
+              style="color:indigo; text-align: center; cursor:pointer"
+              v-on:click="openNewTab(selData.imagePath)"
+              class="ml-4"
+            >Open Image</h5>
+            <br />
+
+            <hr />
+            <br />
+
+            <h3 class="ml-4">{{selData.name}}</h3>
+            <p class="ml-4">{{selData.story ? selData.story : "No story for this picture.."}}</p>
+          </v-sheet>
+        </v-bottom-sheet>
       </v-col>
     </v-row>
   </v-container>
@@ -89,6 +131,8 @@ const axios = require("axios");
 export default {
   data() {
     return {
+      sheet: false,
+      selData: {},
       listdata: [],
       listdataBaby: [],
       listdataSolo: [],
@@ -118,6 +162,10 @@ export default {
     },
     async register() {
       this.$router.push("/Register");
+    },
+    openDetailImg(data) {
+      this.sheet = !this.sheet;
+      this.selData = data;
     },
     openNewTab(url) {
       window.open(url, "_blank");

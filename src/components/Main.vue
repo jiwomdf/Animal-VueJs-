@@ -22,7 +22,7 @@
               <v-tab-item v-for="n in 4" :key="n">
                 <v-container>
                   <v-row v-if="n == 1">
-                    <v-col v-for="(data, idx) in listdata" :key="idx" cols="12" md="4">
+                    <v-col v-for="(data, idx) in listdata" :key="idx" cols="12" md="2">
                       <v-card>
                         <v-img
                           class="white--text align-end"
@@ -37,7 +37,7 @@
                     </v-col>
                   </v-row>
                   <v-row v-if="n == 2">
-                    <v-col v-for="(data, idx) in listdataBaby" :key="idx" cols="12" md="4">
+                    <v-col v-for="(data, idx) in listdataBaby" :key="idx" cols="12" md="2">
                       <v-card>
                         <v-img
                           class="white--text align-end"
@@ -52,7 +52,7 @@
                     </v-col>
                   </v-row>
                   <v-row v-if="n == 3">
-                    <v-col v-for="(data, idx) in listdataSolo" :key="idx" cols="12" md="4">
+                    <v-col v-for="(data, idx) in listdataSolo" :key="idx" cols="12" md="2">
                       <v-card>
                         <v-img
                           class="white--text align-end"
@@ -67,7 +67,7 @@
                     </v-col>
                   </v-row>
                   <v-row v-if="n == 4">
-                    <v-col v-for="(data, idx) in listdataMany" :key="idx" cols="12" md="4">
+                    <v-col v-for="(data, idx) in listdataMany" :key="idx" cols="12" md="2">
                       <v-card>
                         <v-img
                           class="white--text align-end"

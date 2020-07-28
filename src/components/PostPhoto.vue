@@ -48,7 +48,7 @@
 
         <v-textarea v-model="form.story" label="Tell about this pic!" counter maxlength="100"></v-textarea>
 
-        <button v-on:click="postPost()">Post Animal!</button>
+        <v-btn v-on:click="postPost()" dark color="deep-purple accent-4">Post Animal!</v-btn>
         <!-- </form> -->
       </v-col>
     </v-row>
@@ -69,6 +69,7 @@
 <script>
 const axios = require("axios");
 const postRefresher = require("../util/postRefresher");
+const returnRefresher = require("../util/returnRefresher");
 
 export default {
   name: "Main",
@@ -108,13 +109,19 @@ export default {
         this.validateRetVal({ isComplete: false, msg: "empty photo" });
 
       let id = this.makeid(10);
-      let isDataPosted = await this.postData(id);
+      let retPostData = await this.postData(id);
 
-      if (isDataPosted) {
-        let isImgPosted = await this.postImg(id);
+      if (retPostData) {
+        let retPostImg = await this.postImg(id);
 
-        if (isImgPosted) this.$router.push("/Dashboard");
-        //else rollback the DataPosted
+        if (retPostImg.isComplete) this.$router.push("/Dashboard");
+        else {
+          let photoID = retPostData.data.data.data._id;
+
+          await this.deleteAnimal(photoID);
+          this.alert_exist_bool = true;
+          this.alert_exist = retPostImg.msg;
+        }
       }
     },
     async postData(id) {
@@ -142,9 +149,13 @@ export default {
         return axios.post(url, data, header);
       };
 
-      let retVal = await postRefresher(postData, this);
+      let retVal = await returnRefresher(postData, this);
 
-      return this.validateRetVal(retVal);
+      if (!retVal.isComplete) {
+        this.alert_exist_bool = true;
+        this.alert_exist = retVal.msg;
+        return { isValid: false, data: null };
+      } else return { isValid: true, data: retVal.data };
     },
     async postImg(id) {
       const postImg = async (accessToken) => {
@@ -163,16 +174,7 @@ export default {
         return axios.post(url, formData, header);
       };
 
-      let retVal = await postRefresher(postImg, this);
-
-      return this.validateRetVal(retVal);
-    },
-    async validateRetVal(retVal) {
-      if (!retVal.isComplete) {
-        this.alert_exist_bool = true;
-        this.alert_exist = retVal.msg;
-        return false;
-      } else return true;
+      return await postRefresher(postImg, this);
     },
     makeid(length) {
       let result = "";
@@ -188,6 +190,23 @@ export default {
       let unix_seconds = new Date().getTime() / 1000;
 
       return unix_seconds + result;
+    },
+    async deleteAnimal(animalID) {
+      const deleteAnimal = async (accessToken) => {
+        const url = `http://localhost:3000/animal/${animalID}`;
+        const header = {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+
+        return axios.delete(url, header);
+      };
+
+      let myPostData = await postRefresher(deleteAnimal, this);
+
+      if (myPostData.isComplete) return true;
+      else return false;
     },
   },
 };

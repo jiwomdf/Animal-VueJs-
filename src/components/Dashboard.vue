@@ -25,7 +25,6 @@
     <v-row justify="center">
       <v-col>
         <v-btn class="mb-5" text v-on:click="navigatePublicApi()">See public API List</v-btn>
-        <v-btn class="mb-5" text>Feedback to developers</v-btn>
         <v-btn
           class="mb-5"
           style="float:right;"
@@ -46,7 +45,7 @@
               <v-tab-item v-for="n in 2" :key="n">
                 <v-container>
                   <v-row v-if="n == 1">
-                    <v-col v-for="(data, idx) in listdata" :key="idx" cols="12" md="4">
+                    <v-col v-for="(data, idx) in listdata" :key="idx" cols="12" md="2">
                       <v-card>
                         <v-img
                           class="white--text align-end"
@@ -61,25 +60,25 @@
                     </v-col>
                   </v-row>
                   <v-row v-if="n == 2">
-                    <v-col v-for="(data, idx) in mydata" :key="idx" cols="12" md="4">
+                    <v-col v-for="(data, idx) in mydata" :key="idx" cols="12" md="3">
                       <v-card>
                         <v-img
                           class="white--text align-end"
                           :src="data.imagePath"
                           :lazy-src="data.imagePath"
                           aspect-ratio="1"
+                          v-on:click="openDetailImg(data)"
+                        ></v-img>
+                        <v-btn
+                          class="mt-3"
+                          text
+                          color="rgba(255,255,255,0.3)"
+                          style="float:right;"
+                          v-on:click="deletePost(data)"
                         >
-                          <v-btn
-                            class="mt-3"
-                            text
-                            color="rgba(255,255,255,0.3)"
-                            style="float:right;"
-                            v-on:click="deletePost(data)"
-                          >
-                            <v-icon color="white">mdi-delete</v-icon>
-                          </v-btn>
-                          <v-card-title class>{{data.name}}</v-card-title>
-                        </v-img>
+                          <v-icon color="black">mdi-delete</v-icon>
+                        </v-btn>
+                        <v-card-title color="grey">{{data.name}}</v-card-title>
                       </v-card>
                     </v-col>
                   </v-row>
@@ -214,6 +213,7 @@ export default {
       else return false;
     },
     async deleteImage(selData) {
+      console.log(selData);
       const data = {
         animalID: selData.animalID,
         binaryImage: selData.binaryImage,

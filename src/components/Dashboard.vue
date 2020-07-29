@@ -213,25 +213,22 @@ export default {
       else return false;
     },
     async deleteImage(selData) {
-      console.log(selData);
-      const data = {
-        animalID: selData.animalID,
-        binaryImage: selData.binaryImage,
-        destination: selData.destination,
-        imagePath: selData.imagePath,
-        imgID: selData.imgID,
-      };
-
       const deleteImage = async (accessToken) => {
         const url = `http://localhost:3000/image/${selData.imgID}`;
-        const header = {
+
+        return axios.delete(url, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
             "Content-Type": "application/json",
           },
-        };
-
-        return axios.delete(url, header, data);
+          data: {
+            animalID: selData.animalID,
+            binaryImage: selData.binaryImage,
+            destination: selData.destination,
+            imagePath: selData.imagePath,
+            imgID: selData.imgID,
+          },
+        });
       };
 
       let myPostData = await postRefresher(deleteImage, this);

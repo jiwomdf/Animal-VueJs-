@@ -39,7 +39,7 @@
               label="Email"
             ></v-text-field>
 
-            <v-combobox
+            <!-- <v-combobox
               v-model="form.chips"
               :items="form.items"
               chips
@@ -47,6 +47,7 @@
               label="Role"
               multiple
               solo
+              v-on:keydown="noTypeAble()"
             >
               <template v-slot:selection="{ attrs, item, select, selected }">
                 <v-chip
@@ -59,7 +60,7 @@
                   <strong>{{ item }}</strong>
                 </v-chip>
               </template>
-            </v-combobox>
+            </v-combobox>-->
 
             <v-btn class="mt-4" v-on:click="register()">
               <span class="mr-2">Register</span>
@@ -105,6 +106,10 @@ export default {
       this.form.chips.splice(this.form.chips.indexOf(item), 1);
       this.form.chips = [...this.form.chips];
     },
+    // noTypeAble() {
+    //   console.log("masuk");
+    //   this.form.chips = [];
+    // },
     async register() {
       this.alert_exist_bool = false;
       this.alert_sucess_bool = false;
@@ -115,7 +120,7 @@ export default {
         password: this.form.password,
         name: this.form.name,
         email: this.form.email,
-        role: ["admin"],
+        role: ["contributor"], //--> still hard coded
       };
       const headers = {
         "Content-Type": "application/json",

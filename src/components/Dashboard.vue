@@ -69,14 +69,8 @@
                           aspect-ratio="1"
                           v-on:click="openDetailImg(data)"
                         ></v-img>
-                        <v-btn
-                          class="mt-3"
-                          text
-                          color="rgba(255,255,255,0.3)"
-                          style="float:right;"
-                          v-on:click="deletePost(data)"
-                        >
-                          <v-icon color="black">mdi-delete</v-icon>
+                        <v-btn text class="mt-3" style="float:right;" v-on:click="deletePost(data)">
+                          <v-icon color="red darken-1">mdi-delete</v-icon>
                         </v-btn>
                         <v-card-title color="grey">{{data.name}}</v-card-title>
                       </v-card>
@@ -92,34 +86,34 @@
     <v-row>
       <v-col>
         <v-bottom-sheet v-model="sheet" class="m-10" inset>
-          <v-sheet min-height="800px">
-            <br />
-            <center>
-              <v-card max-width="350" max-height="350">
-                <v-img
-                  max-width="350"
-                  max-height="350"
-                  class="white--text"
-                  :src="selData.imagePath"
-                  :lazy-src="selData.imagePath"
-                  aspect-ratio="1"
-                ></v-img>
-              </v-card>
-            </center>
-            <br />
-            <h5
-              style="color:indigo; text-align: center; cursor:pointer"
-              v-on:click="openNewTab(selData.imagePath)"
-              class="ml-4"
-            >Open Image</h5>
-            <br />
-
-            <hr />
-            <br />
-
-            <h3 class="ml-4">{{selData.name}}</h3>
-            <p class="ml-4">{{selData.story ? selData.story : "No story for this picture.."}}</p>
-          </v-sheet>
+          <v-card>
+            <v-sheet min-height="450px">
+              <v-row>
+                <v-col lg="4">
+                  <v-card max-width="350" max-height="350" class="ml-3">
+                    <v-img
+                      max-width="350"
+                      max-height="350"
+                      class="white--text"
+                      :src="selData.imagePath"
+                      :lazy-src="selData.imagePath"
+                      aspect-ratio="1"
+                    ></v-img>
+                  </v-card>
+                  <h4
+                    style="color:indigo; text-align: center; cursor:pointer"
+                    v-on:click="openNewTab(selData.imagePath)"
+                    class="ml-4 mt-2"
+                  >Open Image</h4>
+                </v-col>
+                <v-col>
+                  <h2>{{selData.name}}</h2>
+                  <p>{{selData.story ? selData.story : "No story for this picture.."}}</p>
+                </v-col>
+              </v-row>
+              <br />
+            </v-sheet>
+          </v-card>
         </v-bottom-sheet>
       </v-col>
     </v-row>

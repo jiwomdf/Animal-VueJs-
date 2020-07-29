@@ -42,7 +42,7 @@ async function syncToken(loginUserName, refreshToken, accessToken, context) {
     try {
         console.log("Unauthorized")
 
-        const url = "http://localhost:3000/auth/token/";
+        const url = "http://128.199.125.19:3000/auth/token/";
         const data = { userName: loginUserName, refreshToken: refreshToken, accessToken: accessToken };
         const headers = { "Content-Type": "application/json", };
 

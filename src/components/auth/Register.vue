@@ -114,7 +114,7 @@ export default {
       this.alert_exist_bool = false;
       this.alert_sucess_bool = false;
 
-      const url = "http://localhost:3000/user/register";
+      const url = "http://128.199.125.19:3000/user/register";
       const user = {
         userName: this.form.userName,
         password: this.form.password,

@@ -34,7 +34,6 @@
             <v-text-field
               v-model="form.email"
               :rules="[rules.requiredUserName, rules.minUserName]"
-              counter="15"
               hint="At least 3 characters"
               label="Email"
             ></v-text-field>

@@ -28,10 +28,16 @@
               data-sitekey="6LcLNLcZAAAAALFT7ZNxJY9BvCBiYCxAPdz7Je5R"
             ></div>-->
 
-            <vue-recaptcha
+            <!-- <vue-recaptcha
               ref="recaptcha"
               @verify="setCaptchaValue"
               sitekey="6LcLNLcZAAAAALFT7ZNxJY9BvCBiYCxAPdz7Je5R"
+            ></vue-recaptcha>-->
+
+            <vue-recaptcha
+              ref="recaptcha"
+              @verify="setCaptchaValue"
+              sitekey="6LeVDrgZAAAAAB2EQmZU_yLPoGVVT_NOrOxdjpcE"
             ></vue-recaptcha>
 
             <v-btn class="mt-4" v-on:click="login()">

@@ -6,6 +6,9 @@ You can see this app here http://128.199.125.19/
 ## Created with
 - Vuejs + Vuetivy lib
 
+![](https://firebasestorage.googleapis.com/v0/b/personalwebsite-cbad4.appspot.com/o/ssAnimalAPI.png?alt=media&token=a2034b03-1802-4dbd-a01c-3f9a3d9674aa)
+
+
 Project setup <br>
 npm install
 

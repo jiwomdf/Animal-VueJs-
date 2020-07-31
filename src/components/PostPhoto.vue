@@ -126,7 +126,7 @@ export default {
     },
     async postData(id) {
       const postData = async (accessToken) => {
-        const url = "http://128.199.125.19:3000/animal";
+        const url = "http://localhost:3000/animal";
         const header = {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -160,7 +160,7 @@ export default {
     async postImg(id) {
       const postImg = async (accessToken) => {
         const formData = new FormData();
-        const url = "http://128.199.125.19:3000/image";
+        const url = "http://localhost:3000/image";
         const header = {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -193,7 +193,7 @@ export default {
     },
     async deleteAnimal(animalID) {
       const deleteAnimal = async (accessToken) => {
-        const url = `http://128.199.125.19:3000/animal/${animalID}`;
+        const url = `http://localhost:3000/animal/${animalID}`;
         const header = {
           headers: {
             Authorization: `Bearer ${accessToken}`,

@@ -43,7 +43,7 @@ export default {
       let refreshToken = this.$cookie.get("refreshToken");
 
       try {
-        const url = "http://128.199.125.19:3000/auth/logout";
+        const url = "http://localhost:3000/auth/logout";
         const data = {
           userName: this.$store.getters.getLogin,
           refreshToken: refreshToken,

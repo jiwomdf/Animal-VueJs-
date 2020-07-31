@@ -22,23 +22,17 @@
               @click:append="show1 = !show1"
             ></v-text-field>
 
-            <!-- <div
-              class="g-recaptcha"
+            <vue-recaptcha
               ref="recaptcha"
-              data-sitekey="6LcLNLcZAAAAALFT7ZNxJY9BvCBiYCxAPdz7Je5R"
-            ></div>-->
+              @verify="setCaptchaValue"
+              sitekey="6LcLNLcZAAAAALFT7ZNxJY9BvCBiYCxAPdz7Je5R"
+            ></vue-recaptcha>
 
             <!-- <vue-recaptcha
               ref="recaptcha"
               @verify="setCaptchaValue"
-              sitekey="6LcLNLcZAAAAALFT7ZNxJY9BvCBiYCxAPdz7Je5R"
-            ></vue-recaptcha>-->
-
-            <vue-recaptcha
-              ref="recaptcha"
-              @verify="setCaptchaValue"
               sitekey="6LeVDrgZAAAAAB2EQmZU_yLPoGVVT_NOrOxdjpcE"
-            ></vue-recaptcha>
+            ></vue-recaptcha>-->
 
             <v-btn class="mt-4" v-on:click="login()">
               <span class="mr-2">Login</span>
@@ -95,7 +89,7 @@ export default {
 
       const captcha = this.captchaVal;
 
-      const url = "http://128.199.125.19:3000/auth/login";
+      const url = "http://localhost:3000/auth/login";
       const data = {
         userName: this.form.userName,
         password: this.form.password,

@@ -3,6 +3,9 @@
     <v-row justify="center">
       <v-col cols="12" sm="10" md="8" lg="6">
         <h1 class="mb-2">Register</h1>
+        <h4
+          class="mb-2"
+        >Register an account so you can contribute in this project, it easy and fast!</h4>
         <v-card ref="form">
           <v-card-text>
             <v-text-field
@@ -61,6 +64,12 @@
               </template>
             </v-combobox>-->
 
+            <vue-recaptcha
+              ref="recaptcha"
+              @verify="setCaptchaValue"
+              sitekey="6LcLNLcZAAAAALFT7ZNxJY9BvCBiYCxAPdz7Je5R"
+            ></vue-recaptcha>
+
             <v-btn class="mt-4" v-on:click="register()">
               <span class="mr-2">Register</span>
             </v-btn>
@@ -69,21 +78,31 @@
       </v-col>
     </v-row>
     <v-alert type="error" dismissible v-if="alert_exist_bool">{{alert_exist}}</v-alert>
-    <v-alert type="success" dismissible v-if="alert_sucess_bool">Success</v-alert>
+    <v-alert type="success" dismissible v-if="alert_sucess_bool">
+      Account created successfuly, now you can login by click this button!
+      <v-btn class="ml-4" v-on:click="login()">
+        <span>Go to login page</span>
+      </v-btn>
+    </v-alert>
   </v-container>
 </template>
 
 <script>
 const axios = require("axios");
+import VueRecaptcha from "vue-recaptcha";
 
 export default {
   name: "Register",
+  components: {
+    "vue-recaptcha": VueRecaptcha,
+  },
   data() {
     return {
       passwordShow: false,
       alert_exist: "",
       alert_exist_bool: false,
       alert_sucess_bool: false,
+      captchaVal: "",
       form: {
         userName: "",
         password: "",
@@ -101,25 +120,29 @@ export default {
     };
   },
   methods: {
+    login() {
+      this.$router.push("/Login");
+    },
+    setCaptchaValue(captchaVal) {
+      this.captchaVal = captchaVal;
+    },
     remove(item) {
       this.form.chips.splice(this.form.chips.indexOf(item), 1);
       this.form.chips = [...this.form.chips];
     },
-    // noTypeAble() {
-    //   console.log("masuk");
-    //   this.form.chips = [];
-    // },
     async register() {
       this.alert_exist_bool = false;
       this.alert_sucess_bool = false;
 
-      const url = "http://128.199.125.19:3000/user/register";
+      const captcha = this.captchaVal;
+      const url = "http://localhost:3000/user/register";
       const user = {
         userName: this.form.userName,
         password: this.form.password,
         name: this.form.name,
         email: this.form.email,
         role: ["contributor"], //--> still hard coded
+        captcha: captcha,
       };
       const headers = {
         "Content-Type": "application/json",
@@ -128,10 +151,16 @@ export default {
       try {
         const retval = await axios.post(url, user, headers);
 
-        if (retval.data.status === "200") this.alert_sucess_bool = true;
+        if (retval.data.status === "200") {
+          this.alert_sucess_bool = true;
+        } else {
+          this.alert_exist_bool = true;
+          this.alert_exist = `error ${retval.data.status}`;
+        }
       } catch (err) {
         this.alert_exist_bool = true;
         this.alert_exist = err.response.data.messages;
+        this.$refs.recaptcha.reset();
       }
     },
   },

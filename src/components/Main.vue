@@ -140,7 +140,7 @@ export default {
     };
   },
   async mounted() {
-    const exploreUrl = "http://128.199.125.19:3000/animal/picture/";
+    const exploreUrl = "http://localhost:3000/animal/picture/";
 
     try {
       let exploreData = await axios.post(exploreUrl);

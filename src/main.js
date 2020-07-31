@@ -23,6 +23,12 @@ router.beforeEach((to, from, next) => {
       next()
 
   }
+  else if (to.matched.some(record => record.meta.nonAuth)) {
+    if (stores.getters.getLogin != "")
+      next("/Dashboard")
+    else
+      next()
+  }
   else
     next()
 })

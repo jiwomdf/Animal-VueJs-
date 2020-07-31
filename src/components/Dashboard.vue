@@ -7,7 +7,7 @@
             <v-row>
               <v-col>
                 <v-list-item>
-                  <v-avatar color="teal accent-4">
+                  <v-avatar color="deep-purple accent-4">
                     <v-icon dark>mdi-account-circle</v-icon>
                   </v-avatar>
 
@@ -28,7 +28,7 @@
         <v-btn
           class="mb-5"
           style="float:right;"
-          color="deep-purple accent-4"
+          color="blue accent-4"
           dark
           v-on:click="navigatePost()"
         >
@@ -38,7 +38,7 @@
 
         <v-card ref="form">
           <v-card>
-            <v-tabs background-color="white" color="deep-purple accent-4" centered>
+            <v-tabs background-color="white" color="teal accent-4" centered>
               <v-tab>Explore</v-tab>
               <v-tab>My Post</v-tab>
 

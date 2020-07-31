@@ -19,11 +19,17 @@ export default [
     },
     {
         path: "/Login",
-        component: Login
+        component: Login,
+        meta: {
+            nonAuth: true
+        }
     },
     {
         path: "/Register",
-        component: Register
+        component: Register,
+        meta: {
+            nonAuth: true
+        }
     },
     {
         path: "/Post",

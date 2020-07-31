@@ -1,8 +1,12 @@
 <template>
-  <v-app-bar app color="white" flat dense>
-    <div class="d-flex align-center">Animal Api</div>
+  <v-app-bar app color="teal" dark dense>
+    <v-btn text v-on:click="redirectHome()">Animal Api</v-btn>
+
+    <v-divider class="mx-4" inset vertical></v-divider>
 
     <v-spacer></v-spacer>
+
+    <v-divider class="mx-4" inset vertical></v-divider>
 
     <v-btn text v-if="!isLogin" v-on:click="login()">
       <span class="mr-2">Login</span>
@@ -35,6 +39,11 @@ export default {
 
       if (accessToken == null || refreshToken == null)
         this.$store.getters.getLogin = "";
+    },
+    redirectHome() {
+      let url = window.location.href;
+      if (url != "http://localhost:8080/#/" && "http://128.199.125.19/#/")
+        this.$router.push("/");
     },
     login() {
       this.$router.push("/Login");

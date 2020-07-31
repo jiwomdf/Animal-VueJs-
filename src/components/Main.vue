@@ -5,15 +5,25 @@
         <h1 class="mb-2">Welcome to Animal API!</h1>
       </v-col>
       <v-col>
-        <v-btn class="mt-4 ml-12" v-on:click="navigatePublicApi()" text>See public API List</v-btn>
-        <v-btn class="mt-4 ml-12" text v-on:click="register()">Join to contribute!</v-btn>
+        <v-btn
+          class="mt-4 ml-12"
+          v-on:click="navigatePublicApi()"
+          color="purple accent-4"
+          dark
+        >See public API List</v-btn>
+        <v-btn
+          class="mt-4 ml-12"
+          v-on:click="register()"
+          color="blue accent-4"
+          dark
+        >Join to contribute!</v-btn>
       </v-col>
     </v-row>
     <v-row justify="center">
       <v-col>
         <v-card ref="form">
           <v-card>
-            <v-tabs background-color="white" color="deep-purple accent-4" centered>
+            <v-tabs background-color="white" color="teal accent-4" centered>
               <v-tab>Explore</v-tab>
               <v-tab>Baby Animal</v-tab>
               <v-tab>One Animal</v-tab>

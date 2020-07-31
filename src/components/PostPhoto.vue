@@ -48,7 +48,7 @@
 
         <v-textarea v-model="form.story" label="Tell about this pic!" counter maxlength="100"></v-textarea>
 
-        <v-btn v-on:click="postPost()" dark color="deep-purple accent-4">Post Animal!</v-btn>
+        <v-btn v-on:click="postPost()" dark color="blue accent-4">Post Animal!</v-btn>
         <!-- </form> -->
       </v-col>
     </v-row>

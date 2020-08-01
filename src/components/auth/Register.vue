@@ -135,7 +135,7 @@ export default {
       this.alert_sucess_bool = false;
 
       const captcha = this.captchaVal;
-      const url = "http://localhost:3000/user/register";
+      const url = "http://128.199.125.19/user/register";
       const user = {
         userName: this.form.userName,
         password: this.form.password,

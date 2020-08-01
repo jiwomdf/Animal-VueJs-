@@ -89,7 +89,7 @@ export default {
 
       const captcha = this.captchaVal;
 
-      const url = "http://localhost:3000/auth/login";
+      const url = "http://128.199.125.19/auth/login";
       const data = {
         userName: this.form.userName,
         password: this.form.password,

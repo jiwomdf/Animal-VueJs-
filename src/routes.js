@@ -8,7 +8,10 @@ import ApiDocumentation from "./components/ApiDocumentation.vue"
 export default [
     {
         path: "/",
-        component: Main
+        component: Main,
+        meta: {
+            nonAuth: true
+        }
     },
     {
         path: "/Dashboard",

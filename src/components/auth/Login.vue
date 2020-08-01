@@ -34,7 +34,7 @@
               sitekey="6LeVDrgZAAAAAB2EQmZU_yLPoGVVT_NOrOxdjpcE"
             ></vue-recaptcha>-->
 
-            <v-btn class="mt-4" color="blue accent-4" dark v-on:click="login()">
+            <v-btn class="mt-4" color="teal" dark v-on:click="login()">
               <span class="mr-2">Login</span>
             </v-btn>
           </v-card-text>

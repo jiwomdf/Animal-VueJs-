@@ -7,7 +7,7 @@
             <v-row>
               <v-col>
                 <v-list-item>
-                  <v-avatar color="deep-purple accent-4">
+                  <v-avatar color="blue accent-4">
                     <v-icon dark>mdi-account-circle</v-icon>
                   </v-avatar>
 
@@ -24,21 +24,22 @@
     </v-row>
     <v-row justify="center">
       <v-col>
-        <v-btn class="mb-5" text v-on:click="navigatePublicApi()">See public API List</v-btn>
         <v-btn
           class="mb-5"
-          style="float:right;"
-          color="blue accent-4"
-          dark
-          v-on:click="navigatePost()"
-        >
+          outlined
+          rounded
+          color="teal"
+          text
+          v-on:click="navigatePublicApi()"
+        >See public API List</v-btn>
+        <v-btn class="mb-5" style="float:right;" color="teal" dark v-on:click="navigatePost()">
           Post photo
           <v-icon dark right>mdi-plus</v-icon>
         </v-btn>
 
         <v-card ref="form">
           <v-card>
-            <v-tabs background-color="white" color="teal accent-4" centered>
+            <v-tabs background-color="white" color="teal" centered>
               <v-tab>Explore</v-tab>
               <v-tab>My Post</v-tab>
 
@@ -60,19 +61,24 @@
                     </v-col>
                   </v-row>
                   <v-row v-if="n == 2">
-                    <v-col v-for="(data, idx) in mydata" :key="idx" cols="12" md="3">
+                    <v-col v-for="(data, idx) in mydata" :key="idx" cols="12" md="2">
                       <v-card>
                         <v-img
-                          class="white--text align-end"
                           :src="data.imagePath"
                           :lazy-src="data.imagePath"
                           aspect-ratio="1"
                           v-on:click="openDetailImg(data)"
                         ></v-img>
-                        <v-btn text class="mt-3" style="float:right;" v-on:click="deletePost(data)">
+                        <v-btn
+                          small
+                          text
+                          class="mt-3"
+                          style="float:right;"
+                          v-on:click="deletePost(data)"
+                        >
                           <v-icon color="red darken-1">mdi-delete</v-icon>
                         </v-btn>
-                        <v-card-title color="grey">{{data.name}}</v-card-title>
+                        <v-card-text color="grey">{{data.name}}</v-card-text>
                       </v-card>
                     </v-col>
                   </v-row>
@@ -87,7 +93,7 @@
       <v-col>
         <v-bottom-sheet v-model="sheet" class="m-10" inset>
           <v-card>
-            <v-sheet min-height="450px">
+            <v-sheet min-height="420px">
               <v-row>
                 <v-col lg="4">
                   <v-card max-width="350" max-height="350" class="ml-3">
@@ -101,7 +107,7 @@
                     ></v-img>
                   </v-card>
                   <h4
-                    style="color:indigo; text-align: center; cursor:pointer"
+                    style="color:teal; text-align: center; cursor:pointer"
                     v-on:click="openNewTab(selData.imagePath)"
                     class="ml-4 mt-2"
                   >Open Image</h4>

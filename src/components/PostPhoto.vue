@@ -46,9 +46,9 @@
           </template>
         </v-combobox>
 
-        <v-textarea v-model="form.story" label="Tell about this pic!" counter maxlength="100"></v-textarea>
+        <v-textarea v-model="form.story" label="Tell about this pic!" counter maxlength="200"></v-textarea>
 
-        <v-btn v-on:click="postPost()" dark color="blue accent-4">Post Animal!</v-btn>
+        <v-btn v-on:click="postPost()" dark color="teal">Post Animal!</v-btn>
         <!-- </form> -->
       </v-col>
     </v-row>

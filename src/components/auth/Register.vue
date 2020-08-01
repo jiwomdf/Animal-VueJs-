@@ -70,7 +70,7 @@
               sitekey="6LcLNLcZAAAAALFT7ZNxJY9BvCBiYCxAPdz7Je5R"
             ></vue-recaptcha>
 
-            <v-btn class="mt-4" color="blue accent-4" dark v-on:click="register()">
+            <v-btn class="mt-4" color="teal" dark v-on:click="register()">
               <span class="mr-2">Register</span>
             </v-btn>
           </v-card-text>

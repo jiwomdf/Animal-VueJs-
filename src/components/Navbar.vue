@@ -1,18 +1,18 @@
 <template>
-  <v-app-bar app color="teal" dark dense>
-    <v-btn text v-on:click="redirectHome()">Animal Api</v-btn>
+  <v-app-bar app color="white" dark dense flat>
+    <v-btn text v-on:click="redirectHome()" color="teal">Animal Api</v-btn>
 
-    <v-divider class="mx-4" inset vertical></v-divider>
+    <v-divider class="mx-4" inset vertical color="lightgrey"></v-divider>
 
     <v-spacer></v-spacer>
 
-    <v-divider class="mx-4" inset vertical></v-divider>
+    <v-divider class="mx-4" inset vertical color="lightgrey"></v-divider>
 
-    <v-btn text v-if="!isLogin" v-on:click="login()">
+    <v-btn text v-if="!isLogin" v-on:click="login()" color="teal">
       <span class="mr-2">Login</span>
       <v-icon>mdi-login</v-icon>
     </v-btn>
-    <v-btn text v-if="isLogin" v-on:click="logout()">
+    <v-btn text v-if="isLogin" v-on:click="logout()" color="red accent-4">
       <span class="mr-2">Logout</span>
       <v-icon>mdi-logout</v-icon>
     </v-btn>

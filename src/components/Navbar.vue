@@ -21,7 +21,7 @@
 
 <script>
 const axios = require("axios");
-const productionApiUrl = require("../constant");
+const apiUrl = require("../constant");
 
 export default {
   name: "Navbar",
@@ -43,7 +43,7 @@ export default {
     },
     redirectHome() {
       let url = window.location.href;
-      if (url != "http://localhost:8080/#/" || url != productionApiUrl)
+      if (url != "http://localhost:8080/#/" || url != apiUrl)
         this.$router.push("/");
     },
     login() {
@@ -53,7 +53,7 @@ export default {
       let refreshToken = this.$cookie.get("refreshToken");
 
       try {
-        const url = `${productionApiUrl}/auth/logout`;
+        const url = `${apiUrl}/auth/logout`;
         const data = {
           userName: this.$store.getters.getLogin,
           refreshToken: refreshToken,

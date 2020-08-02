@@ -1,5 +1,5 @@
 module.exports = {
-    productionApiUrl
+    apiUrl
 }
 
-const productionApiUrl = "http://128.199.125.19:3000/"
+const apiUrl = "http://128.199.125.19:3000/"

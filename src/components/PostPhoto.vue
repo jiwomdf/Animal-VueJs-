@@ -70,7 +70,7 @@
 const axios = require("axios");
 const postRefresher = require("../util/postRefresher");
 const returnRefresher = require("../util/returnRefresher");
-const productionApiUrl = require("../constant");
+const apiUrl = require("../constant");
 
 export default {
   name: "Main",
@@ -127,7 +127,7 @@ export default {
     },
     async postData(id) {
       const postData = async (accessToken) => {
-        const url = `${productionApiUrl}/animal`;
+        const url = `${apiUrl}/animal`;
         const header = {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -161,7 +161,7 @@ export default {
     async postImg(id) {
       const postImg = async (accessToken) => {
         const formData = new FormData();
-        const url = `${productionApiUrl}/image`;
+        const url = `${apiUrl}/image`;
         const header = {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -194,7 +194,7 @@ export default {
     },
     async deleteAnimal(animalID) {
       const deleteAnimal = async (accessToken) => {
-        const url = `${productionApiUrl}/animal/${animalID}`;
+        const url = `${apiUrl}/animal/${animalID}`;
         const header = {
           headers: {
             Authorization: `Bearer ${accessToken}`,

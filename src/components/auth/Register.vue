@@ -95,7 +95,7 @@
 
 <script>
 const axios = require("axios");
-const productionApiUrl = require("../constant");
+const apiUrl = require("../../constant");
 import VueRecaptcha from "vue-recaptcha";
 
 export default {
@@ -142,7 +142,7 @@ export default {
       this.alert_sucess_bool = false;
 
       const captcha = this.captchaVal;
-      const url = `${productionApiUrl}/user/register`;
+      const url = `${apiUrl}/user/register`;
       const user = {
         userName: this.form.userName,
         password: this.form.password,

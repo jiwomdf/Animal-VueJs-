@@ -130,7 +130,7 @@
 const axios = require("axios");
 const returnRefresher = require("../util/returnRefresher");
 const postRefresher = require("../util/postRefresher");
-const productionApiUrl = require("../constant");
+const apiUrl = require("../constant");
 
 export default {
   data() {
@@ -159,7 +159,7 @@ export default {
       window.open(url, "_blank");
     },
     async init() {
-      const exploreUrl = `${productionApiUrl}/animal/picture/`;
+      const exploreUrl = `${apiUrl}/animal/picture/`;
 
       try {
         let exploreData = await axios.post(exploreUrl);
@@ -169,7 +169,7 @@ export default {
       }
 
       const getMyPostData = async (accessToken) => {
-        const mypostUrl = `${productionApiUrl}/animal/picture/${this.$store.getters.getLogin}`;
+        const mypostUrl = `${apiUrl}/animal/picture/${this.$store.getters.getLogin}`;
         const header = {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -198,7 +198,7 @@ export default {
     },
     async deleteAnimal(selData) {
       const deleteAnimal = async (accessToken) => {
-        const url = `${productionApiUrl}/animal/${selData.animalID}`;
+        const url = `${apiUrl}/animal/${selData.animalID}`;
         const header = {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -215,7 +215,7 @@ export default {
     },
     async deleteImage(selData) {
       const deleteImage = async (accessToken) => {
-        const url = `${productionApiUrl}/image/${selData.imgID}`;
+        const url = `${apiUrl}/image/${selData.imgID}`;
 
         return axios.delete(url, {
           headers: {

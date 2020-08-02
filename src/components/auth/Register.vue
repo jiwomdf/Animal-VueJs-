@@ -64,12 +64,14 @@
               </template>
             </v-combobox>-->
 
+            <!-- Local -->
             <!-- <vue-recaptcha
               ref="recaptcha"
               @verify="setCaptchaValue"
               sitekey="6LcLNLcZAAAAALFT7ZNxJY9BvCBiYCxAPdz7Je5R"
             ></vue-recaptcha>-->
 
+            <!-- Real -->
             <vue-recaptcha
               ref="recaptcha"
               @verify="setCaptchaValue"

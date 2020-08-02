@@ -22,12 +22,14 @@
               @click:append="show1 = !show1"
             ></v-text-field>
 
+            <!-- Local -->
             <!-- <vue-recaptcha
               ref="recaptcha"
               @verify="setCaptchaValue"
               sitekey="6LcLNLcZAAAAALFT7ZNxJY9BvCBiYCxAPdz7Je5R"
             ></vue-recaptcha>-->
 
+            <!-- Real -->
             <vue-recaptcha
               ref="recaptcha"
               @verify="setCaptchaValue"

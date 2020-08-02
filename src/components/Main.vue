@@ -132,6 +132,8 @@
 
 <script>
 const axios = require("axios");
+const productionApiUrl = require("../constant");
+
 export default {
   data() {
     return {
@@ -153,7 +155,7 @@ export default {
   },
   methods: {
     async init() {
-      const exploreUrl = "http://128.199.125.19/animal/picture/";
+      const exploreUrl = `${productionApiUrl}/animal/picture/`;
 
       try {
         let exploreData = await axios.post(exploreUrl);
@@ -176,7 +178,7 @@ export default {
       window.open(url, "_blank");
     },
     async rebindData() {
-      const exploreUrl = "http://128.199.125.19/animal/dynamic/";
+      const exploreUrl = `${productionApiUrl}/animal/dynamic/`;
 
       if (this.setting.diet == "Not Selected") this.setting.diet = "";
 

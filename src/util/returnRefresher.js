@@ -1,4 +1,5 @@
 const axios = require("axios");
+const productionApiUrl = require("../constant");
 
 module.exports = async (fun, context) => {
 
@@ -42,7 +43,7 @@ async function syncToken(loginUserName, refreshToken, accessToken, context) {
     try {
         console.log("Unauthorized")
 
-        const url = "http://128.199.125.19/auth/token/";
+        const url = `${productionApiUrl}/auth/token/`;
         const data = { userName: loginUserName, refreshToken: refreshToken, accessToken: accessToken };
         const headers = { "Content-Type": "application/json", };
 

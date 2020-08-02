@@ -95,7 +95,7 @@
 
 <script>
 const axios = require("axios");
-const apiUrl = require("../../constant");
+const { apiUrl } = require("../../constant");
 import VueRecaptcha from "vue-recaptcha";
 
 export default {

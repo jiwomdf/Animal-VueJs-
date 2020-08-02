@@ -130,7 +130,7 @@
 const axios = require("axios");
 const returnRefresher = require("../util/returnRefresher");
 const postRefresher = require("../util/postRefresher");
-const apiUrl = require("../constant");
+const { apiUrl } = require("../constant");
 
 export default {
   data() {

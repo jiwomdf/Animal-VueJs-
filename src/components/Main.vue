@@ -132,7 +132,7 @@
 
 <script>
 const axios = require("axios");
-const apiUrl = require("../constant");
+const { apiUrl } = require("../constant");
 
 export default {
   data() {

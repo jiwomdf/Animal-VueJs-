@@ -1,5 +1,5 @@
 const axios = require("axios");
-const apiUrl = require("../constant");
+const { apiUrl } = require("../constant");
 
 module.exports = async (fun, context) => {
 

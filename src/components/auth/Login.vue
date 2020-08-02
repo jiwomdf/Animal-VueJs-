@@ -22,17 +22,17 @@
               @click:append="show1 = !show1"
             ></v-text-field>
 
-            <vue-recaptcha
-              ref="recaptcha"
-              @verify="setCaptchaValue"
-              sitekey="6LcLNLcZAAAAALFT7ZNxJY9BvCBiYCxAPdz7Je5R"
-            ></vue-recaptcha>
-
             <!-- <vue-recaptcha
               ref="recaptcha"
               @verify="setCaptchaValue"
-              sitekey="6LeVDrgZAAAAAB2EQmZU_yLPoGVVT_NOrOxdjpcE"
+              sitekey="6LcLNLcZAAAAALFT7ZNxJY9BvCBiYCxAPdz7Je5R"
             ></vue-recaptcha>-->
+
+            <vue-recaptcha
+              ref="recaptcha"
+              @verify="setCaptchaValue"
+              sitekey="6LeVDrgZAAAAAB2EQmZU_yLPoGVVT_NOrOxdjpcE"
+            ></vue-recaptcha>
 
             <v-btn class="mt-4" color="teal" dark v-on:click="login()">
               <span class="mr-2">Login</span>

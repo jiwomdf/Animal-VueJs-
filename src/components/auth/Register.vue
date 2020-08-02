@@ -64,10 +64,16 @@
               </template>
             </v-combobox>-->
 
-            <vue-recaptcha
+            <!-- <vue-recaptcha
               ref="recaptcha"
               @verify="setCaptchaValue"
               sitekey="6LcLNLcZAAAAALFT7ZNxJY9BvCBiYCxAPdz7Je5R"
+            ></vue-recaptcha>-->
+
+            <vue-recaptcha
+              ref="recaptcha"
+              @verify="setCaptchaValue"
+              sitekey="6LeVDrgZAAAAAB2EQmZU_yLPoGVVT_NOrOxdjpcE"
             ></vue-recaptcha>
 
             <v-btn class="mt-4" color="teal" dark v-on:click="register()">

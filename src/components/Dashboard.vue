@@ -64,11 +64,14 @@
                     <v-col v-for="(data, idx) in mydata" :key="idx" cols="12" md="2">
                       <v-card>
                         <v-img
+                          class="white--text align-end"
                           :src="data.imagePath"
                           :lazy-src="data.imagePath"
                           aspect-ratio="1"
                           v-on:click="openDetailImg(data)"
-                        ></v-img>
+                        >
+                          <v-card-title>{{data.name}}</v-card-title>
+                        </v-img>
                         <v-btn
                           small
                           text
@@ -78,7 +81,15 @@
                         >
                           <v-icon color="red darken-1">mdi-delete</v-icon>
                         </v-btn>
-                        <v-card-text color="grey">{{data.name}}</v-card-text>
+                        <v-btn
+                          small
+                          text
+                          class="mt-3"
+                          style="float:left;"
+                          v-on:click="editPicture()"
+                        >
+                          <v-icon color="teal darken-1">mdi-pencil</v-icon>
+                        </v-btn>
                       </v-card>
                     </v-col>
                   </v-row>
@@ -159,17 +170,17 @@ export default {
       window.open(url, "_blank");
     },
     async init() {
-      const exploreUrl = `${apiUrl}/animal/picture/`;
+      const exploreUrl = `${apiUrl}/animalImg/`;
 
       try {
-        let exploreData = await axios.post(exploreUrl);
+        let exploreData = await axios.get(exploreUrl);
         this.listdata = exploreData.data.data;
       } catch (err) {
         console.log(err);
       }
 
       const getMyPostData = async (accessToken) => {
-        const mypostUrl = `${apiUrl}/animal/picture/${this.$store.getters.getLogin}`;
+        const mypostUrl = `${apiUrl}/animalImg/withId/${this.$store.getters.getLogin}`;
         const header = {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -236,6 +247,9 @@ export default {
 
       if (myPostData.isComplete) return true;
       else return false;
+    },
+    editPicture() {
+      alert(`this feature is currently not available`);
     },
   },
 };

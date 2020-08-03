@@ -155,10 +155,10 @@ export default {
   },
   methods: {
     async init() {
-      const exploreUrl = `${apiUrl}/animal/picture/`;
+      const exploreUrl = `${apiUrl}/animalImg/`;
 
       try {
-        let exploreData = await axios.post(exploreUrl);
+        let exploreData = await axios.get(exploreUrl);
         this.listdata = exploreData.data.data;
       } catch (err) {
         console.log(err);
@@ -178,7 +178,7 @@ export default {
       window.open(url, "_blank");
     },
     async rebindData() {
-      const exploreUrl = `${apiUrl}/animal/dynamic/`;
+      const exploreUrl = `${apiUrl}/animalImg/dynamic/`;
 
       if (this.setting.diet == "Not Selected") this.setting.diet = "";
 
